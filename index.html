@@ -6,11 +6,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#060a10">
-<title>ArbHunter</title>
+<title>ArbHunter Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root{
-  --bg:#060a10;--surface:#0c1220;--border:rgba(255,255,255,0.07);
+  --bg:#060a10;--surface:#0c1220;--surface2:#111827;--border:rgba(255,255,255,0.07);
   --green:#00e676;--green-dim:rgba(0,230,118,0.1);
   --amber:#ffab00;--amber-dim:rgba(255,171,0,0.1);
   --red:#ff5252;--red-dim:rgba(255,82,82,0.1);
@@ -29,182 +30,196 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 #app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:1rem 1rem 5rem}
 
 /* HEADER */
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 0 1.2rem;border-bottom:1px solid var(--border);margin-bottom:1.4rem;flex-wrap:wrap;gap:.5rem}
-.logo{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;letter-spacing:.06em}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0 1rem;border-bottom:1px solid var(--border);margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900;letter-spacing:.06em}
 .logo-arb{background:linear-gradient(135deg,var(--green),#00b0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .logo-hunt{color:var(--amber);-webkit-text-fill-color:var(--amber)}
-.hdr-right{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.live-pill{display:flex;align-items:center;gap:.4rem;font-size:.72rem;padding:.28rem .6rem;border-radius:99px;border:1px solid var(--border);color:var(--muted)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .3s;flex-shrink:0}
+.logo-pro{font-size:1rem;color:var(--purple);-webkit-text-fill-color:var(--purple);margin-left:.3rem}
+.hdr-right{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.live-pill{display:flex;align-items:center;gap:.4rem;font-size:.7rem;padding:.25rem .55rem;border-radius:99px;border:1px solid var(--border);color:var(--muted)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0}
 .dot.on{background:var(--green);animation:pulse 1.8s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.icon-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:.4rem .7rem;cursor:pointer;font-size:.78rem;color:var(--text);transition:all .2s;white-space:nowrap}
+.icon-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:9px;padding:.35rem .65rem;cursor:pointer;font-size:.75rem;color:var(--text);transition:all .2s;white-space:nowrap}
 .icon-btn:hover{background:rgba(255,255,255,0.1)}
 
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:.7rem .4rem;text-align:center}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900}
+.stat-l{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.1rem}
+
+/* GOAL BAR */
+.goal-bar{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:.8rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem}
+.goal-lbl{font-size:.72rem;color:var(--muted);white-space:nowrap}
+.goal-track{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+.goal-fill{height:100%;background:linear-gradient(90deg,var(--green),#00e5ff);border-radius:99px;transition:width .5s ease}
+.goal-pct{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:800;color:var(--green);white-space:nowrap}
+.goal-edit{font-size:.7rem;color:var(--muted);cursor:pointer;text-decoration:underline;white-space:nowrap}
+
+/* REFRESH */
+.rbar{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;font-size:.72rem;color:var(--muted);flex-wrap:wrap}
+.spin{width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:rot .7s linear infinite;display:none;flex-shrink:0}
+@keyframes rot{to{transform:rotate(360deg)}}
+.cd{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:800;color:var(--green)}
+.prog-track{flex:1;min-width:40px;height:2px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),#00b0ff);border-radius:99px}
+.refresh-btn{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;font-weight:700;padding:.2rem .55rem;border-radius:7px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);cursor:pointer}
+.key-status{font-size:.68rem;color:var(--muted)}
+.key-status span{color:var(--green)}
+
 /* TABS */
-.tabs{display:flex;gap:.3rem;margin-bottom:1.4rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:.3rem}
-.tab{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.03em;padding:.5rem .3rem;border-radius:10px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;text-align:center}
+.tabs{display:flex;gap:.3rem;margin-bottom:1.1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:13px;padding:.28rem}
+.tab{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.03em;padding:.45rem .2rem;border-radius:9px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;text-align:center}
 .tab.on{background:rgba(255,255,255,.08);color:var(--text)}
-.tab-badge{display:inline-block;background:var(--green);color:#000;border-radius:99px;font-size:.6rem;padding:.05rem .35rem;margin-left:.3rem;font-weight:900;vertical-align:middle}
+.tab-badge{display:inline-block;background:var(--green);color:#000;border-radius:99px;font-size:.58rem;padding:.04rem .3rem;margin-left:.2rem;font-weight:900;vertical-align:middle}
 .tab-badge.amber{background:var(--amber)}
 .tab-badge.purple{background:var(--purple)}
 
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1.2rem}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem .5rem;text-align:center}
-.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900}
-.stat-l{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.1rem}
-
-/* REFRESH BAR */
-.rbar{display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;font-size:.75rem;color:var(--muted);flex-wrap:wrap}
-.spin{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:rot .7s linear infinite;display:none;flex-shrink:0}
-@keyframes rot{to{transform:rotate(360deg)}}
-.cd{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--green)}
-.prog-track{flex:1;min-width:60px;height:2px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),#00b0ff);border-radius:99px}
-.refresh-btn{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;padding:.22rem .6rem;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);cursor:pointer}
-
-/* TOOLBAR */
-.toolbar{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
-.chip{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.03em;padding:.28rem .75rem;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
+/* FILTER */
+.toolbar{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;margin-bottom:.9rem}
+.chip{font-family:'Barlow Condensed',sans-serif;font-size:.77rem;font-weight:700;letter-spacing:.03em;padding:.25rem .7rem;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
 .chip.on{background:var(--green-dim);border-color:var(--green);color:var(--green)}
 .chip:hover:not(.on){border-color:rgba(255,255,255,.2);color:var(--text)}
 .spacer{flex:1}
-.min-wrap{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--muted)}
-.mini-input{width:52px;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:.25rem .4rem;color:var(--text);font-size:.85rem;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700}
+.min-wrap{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted)}
+.mini-input{width:50px;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:.22rem .4rem;color:var(--text);font-size:.82rem;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700}
 
-/* SECTION HEADER */
-.sec-hdr{display:flex;align-items:center;gap:.6rem;margin:1.4rem 0 .8rem}
-.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:.04em}
-.sec-count{font-size:.72rem;color:var(--muted);background:rgba(255,255,255,.06);padding:.15rem .5rem;border-radius:99px}
+/* FX BAR */
+.fx-bar{display:flex;align-items:center;gap:.6rem;font-size:.7rem;color:var(--muted);margin-bottom:.9rem;padding:.5rem .8rem;background:var(--surface);border:1px solid var(--border);border-radius:10px}
+.fx-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--amber)}
+
+/* SECTION */
+.sec-hdr{display:flex;align-items:center;gap:.5rem;margin:.5rem 0 .7rem}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:.04em}
+.sec-count{font-size:.68rem;color:var(--muted);background:rgba(255,255,255,.06);padding:.12rem .45rem;border-radius:99px}
 .sec-line{flex:1;height:1px;background:var(--border)}
 
 /* CARDS */
-.cards{display:flex;flex-direction:column;gap:.8rem}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s,box-shadow .2s;animation:fadeUp .3s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.card.hot{border-color:rgba(0,230,118,.4);box-shadow:0 0 20px rgba(0,230,118,.08)}
+.cards{display:flex;flex-direction:column;gap:.7rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:15px;overflow:hidden;transition:border-color .2s,box-shadow .2s;animation:fadeUp .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.card.hot{border-color:rgba(0,230,118,.45);box-shadow:0 0 20px rgba(0,230,118,.08)}
 .card.warm{border-color:rgba(255,171,0,.35)}
 .card.cool{border-color:rgba(68,138,255,.25)}
-.card.saved{border-color:rgba(192,132,252,.35)}
-.card.betted{border-color:rgba(0,230,118,.5);box-shadow:0 0 20px rgba(0,230,118,.1)}
-.card.hist{border-color:rgba(255,255,255,.05);opacity:.85}
+.card.low{border-color:rgba(255,255,255,.1)}
 
-.card-head{display:flex;align-items:center;gap:.7rem;padding:.9rem 1rem .8rem;border-bottom:1px solid var(--border)}
-.sport-ico{font-size:1.25rem;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border-radius:8px;flex-shrink:0}
+.card-head{display:flex;align-items:center;gap:.65rem;padding:.85rem .95rem .75rem;border-bottom:1px solid var(--border)}
+.sport-ico{font-size:1.2rem;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border-radius:8px;flex-shrink:0}
 .ev-info{flex:1;min-width:0}
-.ev-teams{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ev-time{font-size:.68rem;color:var(--amber);margin-top:.15rem;font-weight:500}
+.ev-teams{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.2rem}
+.ev-time{font-size:.66rem;color:var(--amber);font-weight:500}
+.ev-countdown{font-size:.66rem;color:var(--green);font-weight:600}
 .ev-time.past{color:var(--muted)}
-.profit-tag{font-family:'Barlow Condensed',sans-serif;font-size:1.35rem;font-weight:900;padding:.25rem .7rem;border-radius:9px;flex-shrink:0}
+.profit-col{display:flex;flex-direction:column;align-items:flex-end;gap:.2rem;flex-shrink:0}
+.profit-tag{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;padding:.22rem .65rem;border-radius:8px}
 .profit-tag.hot{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,.3)}
 .profit-tag.warm{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,171,0,.3)}
 .profit-tag.cool{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(68,138,255,.3)}
+.profit-tag.low{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+.risk-badge{font-size:.6rem;font-weight:700;padding:.1rem .4rem;border-radius:99px;white-space:nowrap}
+.risk-low{background:rgba(0,230,118,.15);color:var(--green)}
+.risk-med{background:rgba(255,171,0,.15);color:var(--amber)}
+.risk-high{background:rgba(255,82,82,.15);color:var(--red)}
 
-/* STATUS BADGES */
-.status-row{display:flex;gap:.4rem;flex-wrap:wrap;padding:.5rem 1rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,.15)}
-.sbadge{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.04em;padding:.18rem .55rem;border-radius:99px}
-.sbadge.new{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,.25)}
-.sbadge.saved{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(192,132,252,.25)}
-.sbadge.betted{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,.4)}
-.sbadge.done{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+/* ODDS CHANGE */
+.odds-change{font-size:.62rem;padding:.08rem .35rem;border-radius:99px;white-space:nowrap}
+.odds-up{background:rgba(0,230,118,.15);color:var(--green)}
+.odds-down{background:rgba(255,82,82,.15);color:var(--red)}
+.odds-same{background:rgba(255,255,255,.06);color:var(--muted)}
 
 /* STAKES */
-.stakes-area{padding:.8rem 1rem}
-.stakes-hdr{font-size:.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.5rem}
-.stake-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.4rem;align-items:center;padding:.38rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.stakes-area{padding:.75rem .95rem}
+.stakes-hdr{font-size:.63rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center}
+.stake-row{display:grid;grid-template-columns:1fr auto auto auto auto;gap:.35rem;align-items:center;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .stake-row:last-child{border-bottom:none}
-.s-outcome{font-size:.86rem;font-weight:500}
-.s-bm{font-size:.67rem;color:var(--muted);background:rgba(255,255,255,.05);padding:.15rem .4rem;border-radius:6px;white-space:nowrap}
-.bm-link{font-size:.67rem;color:var(--blue);background:var(--blue-dim);border:1px solid rgba(68,138,255,.2);padding:.15rem .4rem;border-radius:6px;white-space:nowrap;text-decoration:none;display:inline-block}
-.s-odds{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--blue);text-align:right;min-width:36px}
-.s-amt{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;color:var(--green);text-align:right;min-width:50px}
+.s-outcome{font-size:.83rem;font-weight:500}
+.s-bm{font-size:.65rem;color:var(--muted);background:rgba(255,255,255,.05);padding:.13rem .38rem;border-radius:5px;white-space:nowrap}
+.bm-link{font-size:.65rem;color:var(--blue);background:var(--blue-dim);border:1px solid rgba(68,138,255,.2);padding:.13rem .38rem;border-radius:5px;white-space:nowrap;text-decoration:none;display:inline-block}
+.s-odds{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;color:var(--blue);text-align:right;min-width:34px}
+.s-amt{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--green);text-align:right;min-width:48px}
+.s-amt-eur{font-size:.65rem;color:var(--muted);text-align:right}
 
-/* CALC BAR */
-.calc-bar{display:flex;align-items:center;gap:.6rem;padding:.65rem 1rem;background:rgba(0,0,0,.2);border-top:1px solid var(--border);flex-wrap:wrap}
-.calc-lbl{font-size:.7rem;color:var(--muted);white-space:nowrap}
-.calc-inp{width:70px;background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:7px;padding:.25rem .45rem;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:700;text-align:center}
+/* CALC */
+.calc-bar{display:flex;align-items:center;gap:.5rem;padding:.6rem .95rem;background:rgba(0,0,0,.2);border-top:1px solid var(--border);flex-wrap:wrap}
+.calc-lbl{font-size:.68rem;color:var(--muted);white-space:nowrap}
+.calc-inp{width:68px;background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:7px;padding:.22rem .4rem;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;text-align:center}
 .calc-inp:focus{outline:none;border-color:var(--green)}
-.calc-res{margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;color:var(--green);text-align:right}
+.calc-res{margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:700;color:var(--green);text-align:right}
 
-/* ACTION BAR */
-.action-bar{display:flex;gap:.4rem;flex-wrap:wrap;padding:.65rem 1rem;border-top:1px solid var(--border)}
-.act-btn{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.03em;padding:.3rem .75rem;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;transition:all .2s}
-.act-btn:hover{background:rgba(255,255,255,.09)}
+/* ACTIONS */
+.action-bar{display:flex;gap:.35rem;flex-wrap:wrap;padding:.6rem .95rem;border-top:1px solid var(--border)}
+.act-btn{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.02em;padding:.28rem .7rem;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;transition:all .2s}
 .act-btn.save{border-color:rgba(192,132,252,.4);color:var(--purple);background:var(--purple-dim)}
 .act-btn.bet{border-color:rgba(0,230,118,.4);color:var(--green);background:var(--green-dim)}
 .act-btn.del{border-color:rgba(255,82,82,.3);color:var(--red);background:var(--red-dim)}
-.act-btn.unsave{border-color:rgba(255,171,0,.3);color:var(--amber)}
 
-/* BET FORM */
-.bet-form{padding:.8rem 1rem;border-top:1px solid var(--border);background:rgba(0,230,118,.04)}
-.bet-form-title{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;color:var(--green);margin-bottom:.6rem}
-.bet-inputs{display:flex;gap:.5rem;flex-wrap:wrap;align-items:flex-end}
-.bet-field{display:flex;flex-direction:column;gap:.2rem}
-.bet-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
-.bet-input{background:rgba(255,255,255,.07);border:1px solid rgba(0,230,118,.2);border-radius:8px;padding:.35rem .6rem;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;width:90px}
-.bet-input:focus{outline:none;border-color:var(--green)}
-.bet-confirm{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;padding:.38rem .9rem;border-radius:8px;background:var(--green);color:#000;border:none;cursor:pointer}
+/* BETTED CARD */
+.betted-info{padding:.75rem .95rem;display:flex;gap:1rem;flex-wrap:wrap}
+.bi-cell{flex:1;min-width:70px}
+.bi-val{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800}
+.bi-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.1rem}
 
-/* HISTORY CARD */
-.hist-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.6rem;animation:fadeUp .3s ease both}
-.hist-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem}
-.hist-teams{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;flex:1}
-.hist-date{font-size:.68rem;color:var(--muted)}
-.hist-row{display:flex;gap:1rem;flex-wrap:wrap}
-.hist-cell{flex:1;min-width:80px}
-.hist-val{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800}
-.hist-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.1rem}
+/* HIST */
+.hist-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:.9rem;margin-bottom:.55rem;animation:fadeUp .25s ease both}
+.hist-head{display:flex;align-items:center;gap:.55rem;margin-bottom:.6rem}
+.hist-teams{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;flex:1}
+.hist-row{display:flex;gap:.8rem;flex-wrap:wrap}
+.hist-cell{flex:1;min-width:70px}
+.hist-val{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800}
+.hist-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.08rem}
 
-/* ROI SUMMARY */
-.roi-box{background:var(--surface);border:1px solid rgba(0,230,118,.2);border-radius:16px;padding:1.2rem;margin-bottom:1.4rem}
-.roi-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;color:var(--green);margin-bottom:.9rem}
-.roi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem}
+/* ROI */
+.roi-box{background:var(--surface);border:1px solid rgba(0,230,118,.2);border-radius:14px;padding:1rem;margin-bottom:1.2rem}
+.roi-title{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--green);margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
+.roi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.9rem}
 .roi-cell{text-align:center}
-.roi-val{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900}
-.roi-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.1rem}
+.roi-val{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900}
+.roi-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.08rem}
+.chart-wrap{position:relative;height:140px}
+
+/* BM DIR */
+.bm-dir{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:.9rem;margin-bottom:1rem;display:none}
+.bm-dir-title{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--amber);margin-bottom:.7rem}
+.bm-section-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:.5rem 0 .35rem}
 
 /* MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:1rem}
-.modal{background:#0f1928;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:1.8rem;width:100%;max-width:460px;box-shadow:0 40px 80px rgba(0,0,0,.7);max-height:90vh;overflow-y:auto}
-.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;color:var(--amber);margin-bottom:.4rem}
-.modal-sub{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:1.1rem}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:1rem}
+.modal{background:#0f1928;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:1.6rem;width:100%;max-width:460px;box-shadow:0 40px 80px rgba(0,0,0,.7);max-height:88vh;overflow-y:auto}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--amber);margin-bottom:.35rem}
+.modal-sub{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
 .modal-sub a{color:var(--blue);text-decoration:none}
-.field-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.35rem}
-.text-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.7rem .9rem;color:var(--text);font-family:'Barlow',sans-serif;font-size:.9rem;margin-bottom:.8rem}
+.field-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.32rem}
+.text-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:.65rem .85rem;color:var(--text);font-family:'Barlow',sans-serif;font-size:.88rem;margin-bottom:.75rem}
 .text-input:focus{outline:none;border-color:var(--green)}
-.btn-row{display:flex;gap:.6rem;flex-wrap:wrap}
-.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.04em;border:none;border-radius:10px;padding:.65rem 1.3rem;cursor:pointer;transition:all .2s}
+.btn-row{display:flex;gap:.55rem;flex-wrap:wrap}
+.btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.04em;border:none;border-radius:9px;padding:.6rem 1.2rem;cursor:pointer;transition:all .2s}
 .btn-green{background:var(--green);color:#000}
 .btn-green:hover{background:#1fffa0}
 .btn-ghost{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text)}
-.key-slot{display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;margin-bottom:.5rem}
-.key-slot-num{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;color:var(--muted);min-width:20px}
-.key-slot-val{font-size:.8rem;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.key-slot-active{font-size:.65rem;color:var(--green);background:var(--green-dim);padding:.1rem .4rem;border-radius:99px;white-space:nowrap}
-.key-del{font-size:.75rem;color:var(--red);background:var(--red-dim);border:none;border-radius:6px;padding:.15rem .4rem;cursor:pointer}
-
-/* BM DIR */
-.bm-dir{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:1.2rem;display:none}
-.bm-dir-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;color:var(--amber);margin-bottom:.8rem}
-.bm-section-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:.6rem 0 .4rem}
+.key-slot{display:flex;align-items:center;gap:.4rem;padding:.45rem .65rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem}
+.key-slot-num{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);min-width:18px}
+.key-slot-val{font-size:.75rem;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.key-slot-active{font-size:.62rem;color:var(--green);background:var(--green-dim);padding:.08rem .35rem;border-radius:99px;white-space:nowrap}
+.key-del{font-size:.7rem;color:var(--red);background:var(--red-dim);border:none;border-radius:5px;padding:.12rem .35rem;cursor:pointer}
 
 /* EMPTY */
-.empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
-.empty-ico{font-size:2.5rem;margin-bottom:.7rem}
-.empty-ttl{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:.35rem}
-.big-spin{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:rot .7s linear infinite;margin:0 auto .9rem}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--muted)}
+.empty-ico{font-size:2.3rem;margin-bottom:.6rem}
+.empty-ttl{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+.big-spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:rot .7s linear infinite;margin:0 auto .8rem}
 
 /* TOAST */
-.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#0f1928;border:1px solid var(--green);border-radius:12px;padding:.65rem 1.3rem;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;color:var(--green);z-index:300;pointer-events:none;animation:toastIn .3s ease;white-space:nowrap}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#0f1928;border:1px solid var(--green);border-radius:11px;padding:.6rem 1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;color:var(--green);z-index:300;pointer-events:none;animation:toastIn .3s ease;white-space:nowrap}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
 @media(max-width:520px){
   .stats{grid-template-columns:repeat(2,1fr)}
-  .stat-n{font-size:1.4rem}
+  .stat-n{font-size:1.3rem}
   .roi-grid{grid-template-columns:repeat(2,1fr)}
-  .s-bm,.bm-link{display:none}
-  .ev-teams{font-size:.95rem}
+  .s-bm,.bm-link,.s-amt-eur{display:none}
+  .stake-row{grid-template-columns:1fr auto auto auto}
 }
 </style>
 </head>
@@ -213,29 +228,47 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 
 <!-- HEADER -->
 <div class="hdr">
-  <div class="logo"><span class="logo-arb">ARB</span><span class="logo-hunt">HUNTER</span></div>
+  <div class="logo">
+    <span class="logo-arb">ARB</span><span class="logo-hunt">HUNTER</span><span class="logo-pro">PRO</span>
+  </div>
   <div class="hdr-right">
     <div class="live-pill"><div class="dot" id="dot"></div><span id="status-txt">–</span></div>
-    <button class="icon-btn" onclick="toggleBmDir()">📋 Kancelárie</button>
-    <button class="icon-btn" onclick="openKeyModal()">🔑 API Kľúče</button>
+    <button class="icon-btn" onclick="toggleBmDir()">📋</button>
+    <button class="icon-btn" onclick="exportCSV()">📥 CSV</button>
+    <button class="icon-btn" onclick="openKeyModal()">🔑 Kľúče</button>
   </div>
 </div>
 
-<!-- BOOKMAKER DIR -->
+<!-- BM DIR -->
 <div class="bm-dir" id="bm-dir">
   <div class="bm-dir-title">📋 Stávkové Kancelárie</div>
   <div class="bm-section-lbl">🇸🇰 Slovensko / 🇨🇿 Česko</div>
-  <div id="bm-sk" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem"></div>
+  <div id="bm-sk" style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.4rem"></div>
   <div class="bm-section-lbl">🌍 Európa & Svet</div>
-  <div id="bm-eu" style="display:flex;flex-wrap:wrap;gap:.4rem"></div>
+  <div id="bm-eu" style="display:flex;flex-wrap:wrap;gap:.35rem"></div>
 </div>
 
 <!-- STATS -->
 <div class="stats">
   <div class="stat"><div class="stat-n" style="color:var(--green)" id="s-arb">–</div><div class="stat-l">Arbitráží</div></div>
-  <div class="stat"><div class="stat-n" style="color:var(--purple)" id="s-saved">–</div><div class="stat-l">Uložených</div></div>
-  <div class="stat"><div class="stat-n" style="color:var(--amber)" id="s-betted">–</div><div class="stat-l">Vsadených</div></div>
+  <div class="stat"><div class="stat-n" style="color:var(--purple)" id="s-saved">0</div><div class="stat-l">Uložených</div></div>
+  <div class="stat"><div class="stat-n" style="color:var(--amber)" id="s-betted">0</div><div class="stat-l">Vsadených</div></div>
   <div class="stat"><div class="stat-n" style="color:var(--blue)" id="s-best">–</div><div class="stat-l">Max profit</div></div>
+</div>
+
+<!-- GOAL BAR -->
+<div class="goal-bar">
+  <span class="goal-lbl">🎯 Mesačný cieľ:</span>
+  <div class="goal-track"><div class="goal-fill" id="goal-fill" style="width:0%"></div></div>
+  <span class="goal-pct" id="goal-pct">0%</span>
+  <span class="goal-edit" onclick="editGoal()">⚙️ <span id="goal-val">€500</span></span>
+</div>
+
+<!-- FX BAR -->
+<div class="fx-bar">
+  💱 USD/EUR: <span class="fx-val" id="fx-eur">načítavam...</span>
+  &nbsp;|&nbsp; USD/CZK: <span class="fx-val" id="fx-czk">načítavam...</span>
+  &nbsp;|&nbsp; <span id="fx-time" style="font-size:.65rem">–</span>
 </div>
 
 <!-- REFRESH -->
@@ -244,7 +277,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   <span id="cd-lbl">Ďalší auto refresh</span>
   <span class="cd" id="cd">–</span>
   <div class="prog-track"><div class="prog-fill" id="prog" style="width:100%"></div></div>
-  <button class="refresh-btn" onclick="fetchNow()">🔄 Manuálny refresh</button>
+  <span class="key-status">Kľúče: <span id="key-count">0</span> | Použitý: <span id="key-cur">#–</span></span>
+  <button class="refresh-btn" onclick="fetchNow()">🔄</button>
 </div>
 
 <!-- TABS -->
@@ -255,17 +289,16 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   <button class="tab" onclick="setTab('history',this)">📊 História</button>
 </div>
 
-<!-- FILTER (len pre new tab) -->
+<!-- FILTER -->
 <div id="filter-bar">
   <div class="toolbar">
     <button class="chip on" onclick="setFilter(this,'all')">Všetky</button>
-    <button class="chip" onclick="setFilter(this,'tennis')">🎾 Tenis</button>
-    <button class="chip" onclick="setFilter(this,'basketball')">🏀 Basketbal</button>
-    <button class="chip" onclick="setFilter(this,'americanfootball')">🏈 Am. futbal</button>
-    <button class="chip" onclick="setFilter(this,'baseball')">⚾ Baseball</button>
+    <button class="chip" onclick="setFilter(this,'tennis')">🎾</button>
+    <button class="chip" onclick="setFilter(this,'basketball')">🏀</button>
+    <button class="chip" onclick="setFilter(this,'americanfootball')">🏈</button>
+    <button class="chip" onclick="setFilter(this,'baseball')">⚾</button>
     <div class="spacer"></div>
-    <div class="min-wrap">Min %: <input class="mini-input" id="min-p" type="number" value="0.1" step="0.1" min="0" oninput="render()"></div>
-    <div class="min-wrap" style="margin-left:.3rem">Min kurz: <input class="mini-input" id="min-odds" type="number" value="2.0" step="0.1" min="1" oninput="render()"></div>
+    <div class="min-wrap">Min%: <input class="mini-input" id="min-p" type="number" value="0.1" step="0.1" min="0" oninput="render()"></div>
   </div>
 </div>
 
@@ -278,12 +311,12 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <div class="modal-bg" id="key-modal" style="display:none">
 <div class="modal">
   <div class="modal-title">🔑 API Kľúče</div>
-  <div class="modal-sub">Zaregistruj sa zadarmo na <a href="https://the-odds-api.com" target="_blank">the-odds-api.com</a>. Môžeš pridať 2–3 kľúče – appka ich bude striedať.</div>
+  <div class="modal-sub">Pridaj 2–6 kľúčov z <a href="https://the-odds-api.com" target="_blank">the-odds-api.com</a>. Všetky sa použijú <strong>paralelne naraz</strong> pre maximum príležitostí.</div>
   <div id="key-slots"></div>
-  <div class="field-label" style="margin-top:.8rem">Pridať nový kľúč</div>
+  <div class="field-label" style="margin-top:.7rem">Pridať nový kľúč</div>
   <input class="text-input" id="new-key-inp" type="text" placeholder="Vlož API kľúč...">
   <div class="btn-row">
-    <button class="btn btn-green" onclick="addKey()">➕ Pridať kľúč</button>
+    <button class="btn btn-green" onclick="addKey()">➕ Pridať</button>
     <button class="btn btn-ghost" onclick="closeKeyModal()">Zavrieť</button>
   </div>
 </div>
@@ -293,183 +326,209 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <div class="modal-bg" id="bet-modal" style="display:none">
 <div class="modal">
   <div class="modal-title">✅ Zaznamenať Stávku</div>
-  <div class="modal-sub" id="bet-modal-event">–</div>
+  <div style="font-size:.82rem;color:var(--text);margin-bottom:.8rem;font-weight:600" id="bet-modal-event">–</div>
   <div class="field-label">Celková vsadená suma (€)</div>
-  <input class="text-input" id="bet-total-inp" type="number" value="100" min="1">
-  <div id="bet-stakes-preview" style="margin-bottom:1rem"></div>
+  <input class="text-input" id="bet-total-inp" type="number" value="100" min="1" oninput="updateBetPreview(parseFloat(this.value)||100)">
+  <div id="bet-stakes-preview" style="margin-bottom:.9rem"></div>
   <div class="btn-row">
-    <button class="btn btn-green" onclick="confirmBet()">✅ Potvrdiť stávku</button>
+    <button class="btn btn-green" onclick="confirmBet()">✅ Potvrdiť</button>
     <button class="btn btn-ghost" onclick="closeBetModal()">Zrušiť</button>
   </div>
 </div>
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // CONFIG
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 const REFRESH_HOURS = [6, 18];
 const MIN_INTERVAL_H = 6;
 const SPORTS = [
-  'tennis_atp','tennis_wta',
-  'tennis_atp_french_open','tennis_wta_french_open',
+  'tennis_atp','tennis_wta','tennis_atp_french_open','tennis_wta_french_open',
   'tennis_atp_wimbledon','tennis_atp_us_open',
   'basketball_nba','basketball_euroleague',
   'americanfootball_nfl','baseball_mlb',
 ];
 const SPORT_EMOJI = {tennis:'🎾',basketball:'🏀',americanfootball:'🏈',baseball:'⚾'};
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // STATE
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 let opps = [];
 let sportFilter = 'all';
 let activeTab = 'new';
 let timer = null;
 let pendingBetOpp = null;
+let fxRates = {eur:0.92, czk:23.5};
+let prevOdds = {}; // id -> {outcome: odds}
+let chartInst = null;
 
-// ════════════════════════════════════════════════════════════════
-// STORAGE HELPERS
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// STORAGE
+// ════════════════════════════════════════════════════════
 const LS = {
   get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
   set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
-  del: k => localStorage.removeItem(k),
 };
-
-function getSaved()   { return LS.get('saved_opps') || []; }
-function getBetted()  { return LS.get('betted_opps') || []; }
-function getHistory() {
+const getSaved   = () => LS.get('saved_opps')   || [];
+const getBetted  = () => LS.get('betted_opps')  || [];
+const getHistory = () => {
   const h = LS.get('bet_history') || [];
-  const month = 30*24*3600*1000;
-  return h.filter(x => Date.now() - new Date(x.saved_at).getTime() < month);
-}
+  return h.filter(x => Date.now() - new Date(x.bet_at).getTime() < 30*24*3600*1000);
+};
+const saveSaved   = a => LS.set('saved_opps', a);
+const saveBetted  = a => LS.set('betted_opps', a);
+const saveHistory = a => LS.set('bet_history', a);
 
-function saveSaved(arr)   { LS.set('saved_opps', arr); }
-function saveBetted(arr)  { LS.set('betted_opps', arr); }
-function saveHistory(arr) { LS.set('bet_history', arr); }
-
-// Auto-presun vsadených do histórie po dátume zápasu
+// ════════════════════════════════════════════════════════
+// AUTO ARCHIVE
+// ════════════════════════════════════════════════════════
 function autoArchive() {
-  let betted = getBetted();
-  let history = getHistory();
-  const now = Date.now();
-  const stillActive = [];
+  let betted = getBetted(), history = getHistory();
+  const now = Date.now(), active = [];
   for (const b of betted) {
-    const matchTime = b.commence_time ? new Date(b.commence_time).getTime() : 0;
-    if (matchTime && now > matchTime + 2*3600*1000) { // 2h po zápase
-      history.push({...b, archived_at: new Date().toISOString(), result: 'auto'});
-    } else {
-      stillActive.push(b);
-    }
+    const mt = b.commence_time ? new Date(b.commence_time).getTime() : 0;
+    if (mt && now > mt + 2*3600*1000) history.push({...b, archived_at: new Date().toISOString()});
+    else active.push(b);
   }
-  if (stillActive.length !== betted.length) {
-    saveBetted(stillActive);
-    saveHistory(history);
-  }
+  if (active.length !== betted.length) { saveBetted(active); saveHistory(history); }
 }
 
-// ════════════════════════════════════════════════════════════════
-// API KEYS – striedanie
-// ════════════════════════════════════════════════════════════════
-function getKeys()  { return LS.get('api_keys') || []; }
-function saveKeys(a){ LS.set('api_keys', a); }
-
-function getNextKey() {
-  const keys = getKeys();
-  if (!keys.length) return null;
-  let idx = (LS.get('key_idx') || 0) % keys.length;
-  LS.set('key_idx', (idx + 1) % keys.length);
-  return keys[idx];
-}
+// ════════════════════════════════════════════════════════
+// API KEYS
+// ════════════════════════════════════════════════════════
+const getKeys  = () => LS.get('api_keys') || [];
+const saveKeys = a  => LS.set('api_keys', a);
 
 function addKey() {
   const k = document.getElementById('new-key-inp').value.trim();
   if (!k) { toast('⚠️ Vlož API kľúč!'); return; }
   const keys = getKeys();
-  if (keys.includes(k)) { toast('Tento kľúč už máš uložený'); return; }
-  if (keys.length >= 5) { toast('Maximum 5 kľúčov'); return; }
+  if (keys.includes(k)) { toast('Tento kľúč už máš'); return; }
+  if (keys.length >= 8) { toast('Maximum 8 kľúčov'); return; }
   keys.push(k);
   saveKeys(keys);
   document.getElementById('new-key-inp').value = '';
   renderKeySlots();
   toast('✅ Kľúč pridaný!');
+  updateKeyStatus();
 }
 
-function delKey(idx) {
-  const keys = getKeys();
-  keys.splice(idx, 1);
-  saveKeys(keys);
-  renderKeySlots();
+function delKey(i) {
+  const k = getKeys(); k.splice(i,1); saveKeys(k);
+  renderKeySlots(); updateKeyStatus();
 }
 
 function renderKeySlots() {
   const keys = getKeys();
-  const activeIdx = (LS.get('key_idx') || 0) % Math.max(keys.length, 1);
   document.getElementById('key-slots').innerHTML = keys.length
-    ? keys.map((k,i) => `
-      <div class="key-slot">
+    ? keys.map((k,i) => `<div class="key-slot">
         <span class="key-slot-num">#${i+1}</span>
-        <span class="key-slot-val">${k.substring(0,8)}••••••••${k.slice(-4)}</span>
-        ${i === activeIdx ? '<span class="key-slot-active">▶ Aktívny</span>' : ''}
+        <span class="key-slot-val">${k.substring(0,8)}••••${k.slice(-4)}</span>
         <button class="key-del" onclick="delKey(${i})">🗑</button>
       </div>`).join('')
-    : '<div style="color:var(--muted);font-size:.8rem;margin-bottom:.8rem;">Žiadne kľúče. Pridaj aspoň jeden.</div>';
+    : '<div style="color:var(--muted);font-size:.78rem;margin-bottom:.7rem;">Žiadne kľúče.</div>';
 }
 
-function openKeyModal() {
-  renderKeySlots();
-  document.getElementById('key-modal').style.display = 'flex';
+function updateKeyStatus() {
+  const keys = getKeys();
+  document.getElementById('key-count').textContent = keys.length;
+  document.getElementById('key-cur').textContent = keys.length ? 'všetky' : '–';
 }
-function closeKeyModal() { document.getElementById('key-modal').style.display = 'none'; }
 
-// ════════════════════════════════════════════════════════════════
-// FETCH
-// ════════════════════════════════════════════════════════════════
+function openKeyModal() { renderKeySlots(); document.getElementById('key-modal').style.display='flex'; }
+function closeKeyModal() { document.getElementById('key-modal').style.display='none'; }
+
+// ════════════════════════════════════════════════════════
+// FX RATES
+// ════════════════════════════════════════════════════════
+async function fetchFX() {
+  try {
+    const r = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const d = await r.json();
+    fxRates.eur = d.rates.EUR || 0.92;
+    fxRates.czk = d.rates.CZK || 23.5;
+    document.getElementById('fx-eur').textContent = fxRates.eur.toFixed(4);
+    document.getElementById('fx-czk').textContent = fxRates.czk.toFixed(2);
+    document.getElementById('fx-time').textContent = 'Kurz: ' + new Date().toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
+  } catch {
+    document.getElementById('fx-eur').textContent = '~0.92';
+    document.getElementById('fx-czk').textContent = '~23.5';
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// FETCH – VŠETKY KĽÚČE PARALELNE
+// ════════════════════════════════════════════════════════
 async function fetchNow() {
-  const key = getNextKey();
-  if (!key) { openKeyModal(); setStatus(false,'Chýba API kľúč'); return; }
+  const keys = getKeys();
+  if (!keys.length) { openKeyModal(); setStatus(false,'Chýba API kľúč'); return; }
 
   showSpin(true);
-  setStatus(false,'Načítavam...');
+  setStatus(false,'Načítavam všetky kľúče paralelne...');
 
-  const results = [];
-  let total_ev = 0;
-
-  for (const sport of SPORTS) {
-    const url = `https://api.the-odds-api.com/v4/sports/${sport}/odds?apiKey=${key}&regions=eu&markets=h2h&oddsFormat=decimal&dateFormat=iso`;
-    try {
-      const r = await fetch(url);
-      if (r.status === 401) { showError('Neplatný API kľúč'); openKeyModal(); showSpin(false); return; }
-      if (!r.ok) continue;
-      const events = await r.json();
-      if (!Array.isArray(events)) continue;
-      total_ev += events.length;
-      for (const ev of events) {
-        const arb = calcArb(ev, sport);
-        if (arb) results.push(arb);
-      }
-    } catch(e) {}
+  // Uložíme predošlé kurzy
+  prevOdds = {};
+  for (const o of opps) {
+    prevOdds[o.id] = {};
+    for (const s of (o.stakes100||[])) prevOdds[o.id][s.outcome] = s.odds;
   }
 
-  results.sort((a,b) => b.profit_pct - a.profit_pct);
-  opps = results;
-  LS.set('cached_opps', results);
-  LS.set('cached_ev', total_ev);
+  // Každý kľúč dostane iné športy – rozdeľujeme záťaž
+  const perKey = Math.ceil(SPORTS.length / keys.length);
+  const sportGroups = keys.map((_,i) => SPORTS.slice(i*perKey, (i+1)*perKey));
+
+  // Paralelné volania
+  const allPromises = keys.flatMap((key, ki) =>
+    (sportGroups[ki]||[]).map(sport => fetchSport(key, sport))
+  );
+
+  const results = await Promise.allSettled(allPromises);
+
+  let allEvents = [];
+  results.forEach(r => { if (r.status==='fulfilled' && r.value) allEvents.push(...r.value); });
+
+  // Deduplikácia podľa event ID
+  const seen = new Set();
+  allEvents = allEvents.filter(e => { if(seen.has(e.id)) return false; seen.add(e.id); return true; });
+
+  // Vypočítaj arbitráže
+  const arbResults = [];
+  for (const ev of allEvents) {
+    const arb = calcArb(ev);
+    if (arb) arbResults.push(arb);
+  }
+
+  // Zoraď podľa % výnosu (primárny parameter)
+  arbResults.sort((a,b) => b.profit_pct - a.profit_pct);
+  opps = arbResults;
+  LS.set('cached_opps', arbResults);
+  LS.set('cached_ev', allEvents.length);
   setLastFetch();
 
   const now = new Date().toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
-  setStatus(true, `Živé · ${now} · kľúč #${((LS.get('key_idx')||1)-1+getKeys().length)%getKeys().length+1}`);
+  setStatus(true, `Živé · ${now} · ${allEvents.length} zápasov`);
   showSpin(false);
   autoArchive();
   updateStats();
+  updateKeyStatus();
   render();
 }
 
-// ════════════════════════════════════════════════════════════════
-// CALC ARB
-// ════════════════════════════════════════════════════════════════
-function calcArb(event, sport) {
+async function fetchSport(key, sport) {
+  const url = `https://api.the-odds-api.com/v4/sports/${sport}/odds?apiKey=${key}&regions=eu&markets=h2h&oddsFormat=decimal&dateFormat=iso`;
+  try {
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    const d = await r.json();
+    return Array.isArray(d) ? d : null;
+  } catch { return null; }
+}
+
+// ════════════════════════════════════════════════════════
+// CALC ARB – BEZ MINIMALNEHO KURZU
+// ════════════════════════════════════════════════════════
+function calcArb(event) {
   const bms = event.bookmakers || [];
   if (bms.length < 2) return null;
 
@@ -487,9 +546,6 @@ function calcArb(event, sport) {
   const entries = Object.entries(best);
   if (entries.length < 2) return null;
 
-  const minOdds = parseFloat(document.getElementById('min-odds')?.value) || 2.0;
-  if (entries.some(([,v]) => v.odds < minOdds)) return null;
-
   const impl = entries.reduce((s,[,v]) => s + 1/v.odds, 0);
   if (impl >= 1.0) return null;
 
@@ -501,15 +557,24 @@ function calcArb(event, sport) {
     stake: Math.round((100/impl)/odds*100)/100,
   }));
 
-  const sportKey = Object.keys(SPORT_EMOJI).find(k => sport.includes(k)) || 'other';
+  const sportKey = Object.keys(SPORT_EMOJI).find(k => (event._sport||'').includes(k)) || 'other';
   const commence = event.commence_time || null;
   const timeStr = commence
     ? new Date(commence).toLocaleString('sk-SK',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
     : '';
 
+  // Risk assessment
+  const minOdds = Math.min(...stakes100.map(s=>s.odds));
+  const maxOdds = Math.max(...stakes100.map(s=>s.odds));
+  const oddsSpread = maxOdds / minOdds;
+  let risk = 'low';
+  if (profit_pct < 0.3 || oddsSpread > 4) risk = 'high';
+  else if (profit_pct < 0.8 || oddsSpread > 2.5) risk = 'med';
+
   return {
     id: event.id || Math.random().toString(36).slice(2),
-    sport, sportKey,
+    sport: event._sport || '',
+    sportKey,
     emoji: SPORT_EMOJI[sportKey] || '🏆',
     home: event.home_team || '',
     away: event.away_team || '',
@@ -518,177 +583,213 @@ function calcArb(event, sport) {
     profit_pct,
     impl_pct: Math.round(impl*10000)/100,
     stakes100,
+    risk,
+    minOdds,
   };
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// COUNTDOWN TO MATCH
+// ════════════════════════════════════════════════════════
+function countdownStr(commence_time) {
+  if (!commence_time) return '';
+  const diff = new Date(commence_time).getTime() - Date.now();
+  if (diff < 0) return '⏱ Prebieha/Skončil';
+  const h = Math.floor(diff/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  if (h > 48) return `📅 O ${Math.floor(h/24)} dní`;
+  if (h > 0) return `⏱ O ${h}h ${m}m`;
+  return `⚡ O ${m} min`;
+}
+
+// ════════════════════════════════════════════════════════
+// ODDS CHANGE
+// ════════════════════════════════════════════════════════
+function oddsChangeHtml(oppId, outcome, currentOdds) {
+  const prev = prevOdds[oppId]?.[outcome];
+  if (!prev) return `<span class="odds-change odds-same">nové</span>`;
+  const diff = currentOdds - prev;
+  if (Math.abs(diff) < 0.01) return `<span class="odds-change odds-same">–</span>`;
+  return diff > 0
+    ? `<span class="odds-change odds-up">▲ +${diff.toFixed(2)}</span>`
+    : `<span class="odds-change odds-down">▼ ${diff.toFixed(2)}</span>`;
+}
+
+// ════════════════════════════════════════════════════════
 // RENDER
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function render() {
   updateStats();
   const el = document.getElementById('content');
-  document.getElementById('filter-bar').style.display = activeTab === 'new' ? '' : 'none';
-
-  if (activeTab === 'new')     renderNew(el);
-  else if (activeTab === 'saved')   renderSaved(el);
-  else if (activeTab === 'betted')  renderBetted(el);
-  else if (activeTab === 'history') renderHistory(el);
+  document.getElementById('filter-bar').style.display = activeTab==='new' ? '' : 'none';
+  if      (activeTab==='new')     renderNew(el);
+  else if (activeTab==='saved')   renderSaved(el);
+  else if (activeTab==='betted')  renderBetted(el);
+  else if (activeTab==='history') renderHistory(el);
+  updateGoal();
+  updateCountdowns();
 }
 
 function updateStats() {
-  const saved   = getSaved();
-  const betted  = getBetted();
-  document.getElementById('s-arb').textContent    = opps.length || (LS.get('cached_opps')||[]).length || '–';
-  document.getElementById('s-saved').textContent  = saved.length || '0';
-  document.getElementById('s-betted').textContent = betted.length || '0';
   const src = opps.length ? opps : (LS.get('cached_opps')||[]);
+  document.getElementById('s-arb').textContent    = src.length || '–';
+  document.getElementById('s-saved').textContent  = getSaved().length;
+  document.getElementById('s-betted').textContent = getBetted().length;
   document.getElementById('s-best').textContent   = src[0] ? `+${src[0].profit_pct.toFixed(2)}%` : '–';
-  document.getElementById('tb-new').textContent    = (opps.length || (LS.get('cached_opps')||[]).length || 0);
-  document.getElementById('tb-saved').textContent  = saved.length;
-  document.getElementById('tb-betted').textContent = betted.length;
+  document.getElementById('tb-new').textContent    = src.length;
+  document.getElementById('tb-saved').textContent  = getSaved().length;
+  document.getElementById('tb-betted').textContent = getBetted().length;
 }
 
 function renderNew(el) {
-  const minP = parseFloat(document.getElementById('min-p').value) || 0;
-  const minO = parseFloat(document.getElementById('min-odds').value) || 2.0;
+  const minP = parseFloat(document.getElementById('min-p').value)||0;
   let src = opps.length ? opps : (LS.get('cached_opps')||[]);
   let list = src.filter(o => {
-    if (sportFilter !== 'all' && !o.sport.includes(sportFilter)) return false;
+    if (sportFilter!=='all' && !o.sport.includes(sportFilter)) return false;
     if (o.profit_pct < minP) return false;
-    if (o.stakes100 && o.stakes100.some(s => s.odds < minO)) return false;
     return true;
   });
+  // Zoradenie podľa % výnosu (primárne)
+  list.sort((a,b) => b.profit_pct - a.profit_pct);
 
-  if (!list.length) {
-    el.innerHTML = emptyHtml('🔍','Žiadne arbitráže','Skús znížiť min. profit alebo min. kurz');
-    return;
-  }
+  if (!list.length) { el.innerHTML = emptyHtml('🔍','Žiadne arbitráže','Skús znížiť min. profit'); return; }
 
   const savedIds  = getSaved().map(x=>x.id);
   const bettedIds = getBetted().map(x=>x.id);
-
-  el.innerHTML = `<div class="cards">${list.map((o,i) => cardHtml(o, i, {
-    isSaved:  savedIds.includes(o.id),
-    isBetted: bettedIds.includes(o.id),
-    showActions: true,
-  })).join('')}</div>`;
+  el.innerHTML = `<div class="cards">${list.map((o,i)=>cardHtml(o,i,{isSaved:savedIds.includes(o.id),isBetted:bettedIds.includes(o.id)})).join('')}</div>`;
 }
 
 function renderSaved(el) {
   const list = getSaved();
-  if (!list.length) { el.innerHTML = emptyHtml('⭐','Žiadne uložené podujatia','V záložke Nové klepni ⭐ Uložiť'); return; }
-  const bettedIds = getBetted().map(x=>x.id);
-  el.innerHTML = `
-    <div class="sec-hdr"><span class="sec-title" style="color:var(--purple)">⭐ Uložené Podujatia</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>
-    <div class="cards">${list.map((o,i) => cardHtml(o, i, {isSaved:true, isBetted:bettedIds.includes(o.id), showActions:true})).join('')}</div>`;
+  if (!list.length) { el.innerHTML = emptyHtml('⭐','Žiadne uložené','V záložke Nové klepni ⭐ Uložiť'); return; }
+  list.sort((a,b) => b.profit_pct - a.profit_pct);
+  const bIds = getBetted().map(x=>x.id);
+  el.innerHTML = `<div class="sec-hdr"><span class="sec-title" style="color:var(--purple)">⭐ Uložené</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>
+  <div class="cards">${list.map((o,i)=>cardHtml(o,i,{isSaved:true,isBetted:bIds.includes(o.id)})).join('')}</div>`;
 }
 
 function renderBetted(el) {
   const list = getBetted();
   if (!list.length) { el.innerHTML = emptyHtml('✅','Žiadne aktívne stávky','V záložke Nové klepni ✅ Vsadil som'); return; }
-  el.innerHTML = `
-    <div class="sec-hdr"><span class="sec-title" style="color:var(--amber)">✅ Aktívne Stávky</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>
-    <div class="cards">${list.map((o,i) => bettedCardHtml(o,i)).join('')}</div>`;
+  el.innerHTML = `<div class="sec-hdr"><span class="sec-title" style="color:var(--amber)">✅ Aktívne Stávky</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>
+  <div class="cards">${list.map((o,i)=>bettedCardHtml(o,i)).join('')}</div>`;
 }
 
 function renderHistory(el) {
   const list = getHistory().slice().reverse();
   const roi  = calcROI(list);
-
-  let html = '';
-
-  // ROI summary
-  if (list.length) {
-    const profitColor = roi.profit >= 0 ? 'var(--green)' : 'var(--red)';
-    html += `<div class="roi-box">
-      <div class="roi-title">📊 Mesačný Prehľad</div>
-      <div class="roi-grid">
-        <div class="roi-cell"><div class="roi-val" style="color:var(--amber)">${list.length}</div><div class="roi-lbl">Stávok</div></div>
-        <div class="roi-cell"><div class="roi-val" style="color:var(--blue)">€${roi.total_bet.toFixed(0)}</div><div class="roi-lbl">Vsadené</div></div>
-        <div class="roi-cell"><div class="roi-val" style="color:${profitColor}">${roi.profit>=0?'+':''}€${roi.profit.toFixed(2)}</div><div class="roi-lbl">Profit</div></div>
-        <div class="roi-cell"><div class="roi-val" style="color:${profitColor}">${roi.roi>=0?'+':''}${roi.roi.toFixed(1)}%</div><div class="roi-lbl">ROI</div></div>
-      </div>
-    </div>`;
+  const pColor = roi.profit>=0?'var(--green)':'var(--red)';
+  const pSign  = roi.profit>=0?'+':'';
+  let html = `<div class="roi-box">
+    <div class="roi-title">📊 Mesačný Prehľad <button onclick="exportCSV()" style="font-size:.7rem;background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:.2rem .5rem;cursor:pointer;">📥 Export</button></div>
+    <div class="roi-grid">
+      <div class="roi-cell"><div class="roi-val" style="color:var(--amber)">${list.length}</div><div class="roi-lbl">Stávok</div></div>
+      <div class="roi-cell"><div class="roi-val" style="color:var(--blue)">€${roi.total_bet.toFixed(0)}</div><div class="roi-lbl">Vsadené</div></div>
+      <div class="roi-cell"><div class="roi-val" style="color:${pColor}">${pSign}€${roi.profit.toFixed(2)}</div><div class="roi-lbl">Profit</div></div>
+      <div class="roi-cell"><div class="roi-val" style="color:${pColor}">${pSign}${roi.roi.toFixed(1)}%</div><div class="roi-lbl">ROI</div></div>
+    </div>
+    <div class="chart-wrap"><canvas id="profit-chart"></canvas></div>
+  </div>`;
+  if (!list.length) html += emptyHtml('📊','História je prázdna','Vsadené stávky sa sem presunú po zápase');
+  else {
+    html += `<div class="sec-hdr"><span class="sec-title">📋 Posledných 30 dní</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>`;
+    html += list.map(h=>histCardHtml(h)).join('');
   }
-
-  if (!list.length) {
-    html += emptyHtml('📊','História je prázdna','Vsadené stávky sa sem presunú automaticky po zápase');
-  } else {
-    html += `<div class="sec-hdr"><span class="sec-title">📋 História (posledných 30 dní)</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>`;
-    html += list.map(h => histCardHtml(h)).join('');
-  }
-
   el.innerHTML = html;
+  setTimeout(()=>renderChart(list), 50);
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // CARD HTML
-// ════════════════════════════════════════════════════════════════
-function cardHtml(o, i, opts) {
-  const tier = o.profit_pct >= 2 ? 'hot' : o.profit_pct >= 0.8 ? 'warm' : 'cool';
-  const isPast = o.commence_time && new Date(o.commence_time) < new Date();
-  const timeClass = isPast ? 'past' : '';
+// ════════════════════════════════════════════════════════
+function cardHtml(o, i, {isSaved, isBetted}) {
+  const tier = o.profit_pct>=2?'hot':o.profit_pct>=0.8?'warm':o.profit_pct>=0.3?'cool':'low';
+  const isPast = o.commence_time && new Date(o.commence_time)<new Date();
+  const cd = countdownStr(o.commence_time);
+  const riskCls = {low:'risk-low',med:'risk-med',high:'risk-high'}[o.risk||'med'];
+  const riskLbl = {low:'Nízke riziko',med:'Stredné',high:'Vysoké riziko'}[o.risk||'med'];
+  const calcId = `c${i}_${o.id.slice(0,5)}`;
 
-  const stakeHtml = (stakes100, total=100) => stakes100.map(s => {
-    const st = Math.round((total/(o.impl_pct/100))/s.odds*100)/100;
+  const stakeRows = o.stakes100.map(s => {
+    const eurAmt = (s.stake * fxRates.eur).toFixed(2);
+    const chg = oddsChangeHtml(o.id, s.outcome, s.odds);
     return `<div class="stake-row">
       <div class="s-outcome">${s.outcome}</div>
       <div>${bmLink(s.bm)}</div>
-      <div class="s-odds">${s.odds.toFixed(2)}</div>
-      <div class="s-amt">€${st.toFixed(2)}</div>
+      <div class="s-odds">${s.odds.toFixed(2)} ${chg}</div>
+      <div>
+        <div class="s-amt" id="amt_${calcId}_${s.outcome.replace(/\W/g,'_')}">€${s.stake.toFixed(2)}</div>
+        <div class="s-amt-eur">${(s.stake*fxRates.eur).toFixed(2)}€</div>
+      </div>
     </div>`;
   }).join('');
 
-  let actionBtns = '';
-  if (opts.showActions) {
-    if (!opts.isBetted) {
-      actionBtns += opts.isSaved
-        ? `<button class="act-btn unsave" onclick="unsaveOpp('${o.id}')">★ Odstrániť z uložených</button>`
-        : `<button class="act-btn save" onclick="saveOpp('${o.id}')">⭐ Uložiť</button>`;
-      actionBtns += `<button class="act-btn bet" onclick="openBetModal('${o.id}')">✅ Vsadil som</button>`;
-    } else {
-      actionBtns += `<span style="font-size:.78rem;color:var(--green);">✅ Stávka zaznamenaná</span>`;
-    }
+  const ret100 = (100/o.impl_pct*100).toFixed(2);
+  const prof100 = (100*(o.profit_pct/100)).toFixed(2);
+
+  let actions = '';
+  if (!isBetted) {
+    actions = (isSaved
+      ? `<button class="act-btn" onclick="unsaveOpp('${o.id}')">★ Uložené</button>`
+      : `<button class="act-btn save" onclick="saveOpp('${o.id}')">⭐ Uložiť</button>`)
+      + `<button class="act-btn bet" onclick="openBetModal('${o.id}')">✅ Vsadil som</button>`;
+  } else {
+    actions = `<span style="font-size:.72rem;color:var(--green)">✅ Stávka zaznamenaná</span>`;
   }
 
-  const calcId = `calc_${i}_${o.id.slice(0,6)}`;
-
-  return `<div class="card ${tier}" style="animation-delay:${i*0.03}s">
+  return `<div class="card ${tier}" style="animation-delay:${i*.025}s" id="card_${o.id.slice(0,8)}">
     <div class="card-head">
       <div class="sport-ico">${o.emoji}</div>
       <div class="ev-info">
         <div class="ev-teams">${o.home} vs ${o.away}</div>
-        ${o.time_str ? `<div class="ev-time ${timeClass}">📅 ${o.time_str}${isPast?' · odohraný':''}</div>` : ''}
+        <div class="ev-meta">
+          ${o.time_str?`<span class="ev-time ${isPast?'past':''}">📅 ${o.time_str}</span>`:''}
+          ${cd?`<span class="ev-countdown" id="cd_${o.id.slice(0,8)}">${cd}</span>`:''}
+        </div>
       </div>
-      <div class="profit-tag ${tier}">+${o.profit_pct.toFixed(2)}%</div>
+      <div class="profit-col">
+        <div class="profit-tag ${tier}">+${o.profit_pct.toFixed(2)}%</div>
+        <span class="risk-badge ${riskCls}">${riskLbl}</span>
+      </div>
     </div>
     <div class="stakes-area">
-      <div class="stakes-hdr">Stávky pre €<span id="tot_${calcId}">100</span> · Výnos: <span id="ret_${calcId}" style="color:var(--green)">€${(100/o.impl_pct*100).toFixed(2)}</span></div>
-      <div id="rows_${calcId}">${stakeHtml(o.stakes100, 100)}</div>
+      <div class="stakes-hdr">
+        <span>Stávky pre €<span id="tot_${calcId}">100</span></span>
+        <span>Výnos: <span id="ret_${calcId}" style="color:var(--green)">€${ret100}</span> · Profit: <span id="pr_${calcId}" style="color:var(--green)">€${prof100}</span></span>
+      </div>
+      ${stakeRows}
     </div>
     <div class="calc-bar">
-      <span class="calc-lbl">Moja investícia €:</span>
+      <span class="calc-lbl">Investícia €:</span>
       <input class="calc-inp" type="number" value="100" min="1"
-        oninput="recalc(this,'${calcId}',${JSON.stringify(o.stakes100)},${o.impl_pct})">
-      <div class="calc-res" id="profit_${calcId}">Profit: €${(100*(o.profit_pct/100)).toFixed(2)}</div>
+        oninput="recalc(this,'${calcId}',${JSON.stringify(o.stakes100)},${o.impl_pct},${o.profit_pct})">
+      <div class="calc-res" id="eur_${calcId}">≈ ${(100*fxRates.eur).toFixed(0)}€ / ${(100*fxRates.czk).toFixed(0)} CZK</div>
     </div>
-    ${actionBtns ? `<div class="action-bar">${actionBtns}</div>` : ''}
+    <div class="action-bar">${actions}</div>
   </div>`;
 }
 
 function bettedCardHtml(o, i) {
-  const isPast = o.commence_time && new Date(o.commence_time) < new Date();
-  return `<div class="card betted" style="animation-delay:${i*0.03}s">
+  const isPast = o.commence_time && new Date(o.commence_time)<new Date();
+  const cd = countdownStr(o.commence_time);
+  return `<div class="card" style="border-color:rgba(0,230,118,.4);animation-delay:${i*.025}s">
     <div class="card-head">
       <div class="sport-ico">${o.emoji||'🏆'}</div>
       <div class="ev-info">
         <div class="ev-teams">${o.home} vs ${o.away}</div>
-        ${o.time_str ? `<div class="ev-time ${isPast?'past':''}">📅 ${o.time_str}${isPast?' · čakám na archivovanie':''}</div>` : ''}
+        <div class="ev-meta">
+          ${o.time_str?`<span class="ev-time ${isPast?'past':''}">📅 ${o.time_str}</span>`:''}
+          ${cd?`<span class="ev-countdown">${cd}</span>`:''}
+        </div>
       </div>
       <div class="profit-tag hot">+${o.profit_pct.toFixed(2)}%</div>
     </div>
-    <div class="stakes-area">
-      <div class="stakes-hdr">Vsadená suma: <strong style="color:var(--green)">€${o.bet_total||100}</strong> · Očakávaný výnos: <strong style="color:var(--green)">€${o.expected_return||'–'}</strong></div>
+    <div class="betted-info">
+      <div class="bi-cell"><div class="bi-val" style="color:var(--blue)">€${o.bet_total||'–'}</div><div class="bi-lbl">Vsadené</div></div>
+      <div class="bi-cell"><div class="bi-val" style="color:var(--green)">€${o.expected_return||'–'}</div><div class="bi-lbl">Očak. výnos</div></div>
+      <div class="bi-cell"><div class="bi-val" style="color:var(--green)">€${o.profit?o.profit.toFixed(2):'–'}</div><div class="bi-lbl">Profit</div></div>
+    </div>
+    <div style="padding:.5rem .95rem;border-top:1px solid var(--border)">
       ${(o.stakes100||[]).map(s=>`<div class="stake-row">
         <div class="s-outcome">${s.outcome}</div>
         <div>${bmLink(s.bm)}</div>
@@ -697,114 +798,144 @@ function bettedCardHtml(o, i) {
       </div>`).join('')}
     </div>
     <div class="action-bar">
-      <span style="font-size:.72rem;color:var(--muted)">Vsadené: ${new Date(o.bet_at).toLocaleString('sk-SK',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span>
-      <button class="act-btn del" style="margin-left:auto" onclick="removeBet('${o.id}')">🗑 Zmazať</button>
+      <span style="font-size:.68rem;color:var(--muted)">Vsadené: ${new Date(o.bet_at).toLocaleString('sk-SK',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span>
+      <button class="act-btn del" style="margin-left:auto" onclick="removeBet('${o.id}')">🗑</button>
     </div>
   </div>`;
 }
 
 function histCardHtml(h) {
-  const profitColor = (h.profit||0) >= 0 ? 'var(--green)' : 'var(--red)';
-  const profitSign  = (h.profit||0) >= 0 ? '+' : '';
-  const roi = h.bet_total ? ((h.profit||0)/h.bet_total*100).toFixed(1) : '–';
+  const pColor = (h.profit||0)>=0?'var(--green)':'var(--red)';
+  const pSign  = (h.profit||0)>=0?'+':'';
+  const roi = h.bet_total?((h.profit||0)/h.bet_total*100).toFixed(1):'–';
   return `<div class="hist-card">
     <div class="hist-head">
-      <span style="font-size:1.2rem">${h.emoji||'🏆'}</span>
+      <span style="font-size:1.1rem">${h.emoji||'🏆'}</span>
       <div style="flex:1;min-width:0">
         <div class="hist-teams">${h.home} vs ${h.away}</div>
-        <div class="hist-date">${h.time_str||''} · Archivované: ${new Date(h.archived_at||h.bet_at).toLocaleString('sk-SK',{day:'2-digit',month:'2-digit'})}</div>
+        <div style="font-size:.65rem;color:var(--muted)">${h.time_str||''} · ${new Date(h.archived_at||h.bet_at).toLocaleDateString('sk-SK')}</div>
       </div>
     </div>
     <div class="hist-row">
       <div class="hist-cell"><div class="hist-val" style="color:var(--blue)">€${h.bet_total||'–'}</div><div class="hist-lbl">Vsadené</div></div>
-      <div class="hist-cell"><div class="hist-val" style="color:var(--amber)">€${h.expected_return||'–'}</div><div class="hist-lbl">Očak. výnos</div></div>
-      <div class="hist-cell"><div class="hist-val" style="color:${profitColor}">${profitSign}€${(h.profit||0).toFixed(2)}</div><div class="hist-lbl">Profit</div></div>
-      <div class="hist-cell"><div class="hist-val" style="color:${profitColor}">${profitSign}${roi}%</div><div class="hist-lbl">ROI</div></div>
+      <div class="hist-cell"><div class="hist-val" style="color:var(--amber)">€${h.expected_return||'–'}</div><div class="hist-lbl">Výnos</div></div>
+      <div class="hist-cell"><div class="hist-val" style="color:${pColor}">${pSign}€${(h.profit||0).toFixed(2)}</div><div class="hist-lbl">Profit</div></div>
+      <div class="hist-cell"><div class="hist-val" style="color:${pColor}">${pSign}${roi}%</div><div class="hist-lbl">ROI</div></div>
     </div>
   </div>`;
 }
 
-function emptyHtml(ico, ttl, sub) {
-  return `<div class="empty"><div class="empty-ico">${ico}</div><div class="empty-ttl">${ttl}</div><div style="font-size:.82rem;margin-top:.3rem">${sub}</div></div>`;
+function emptyHtml(ico,ttl,sub) {
+  return `<div class="empty"><div class="empty-ico">${ico}</div><div class="empty-ttl">${ttl}</div><div style="font-size:.8rem;margin-top:.3rem">${sub}</div></div>`;
 }
 
-// ════════════════════════════════════════════════════════════════
-// CALC RECALC
-// ════════════════════════════════════════════════════════════════
-function recalc(inp, cid, stakes, impl_pct) {
+// ════════════════════════════════════════════════════════
+// CHART
+// ════════════════════════════════════════════════════════
+function renderChart(list) {
+  const ctx = document.getElementById('profit-chart');
+  if (!ctx) return;
+  if (chartInst) { chartInst.destroy(); chartInst=null; }
+  if (!list.length) return;
+
+  const sorted = list.slice().sort((a,b)=>new Date(a.bet_at)-new Date(b.bet_at));
+  let cum = 0;
+  const labels = sorted.map(h=>new Date(h.bet_at).toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit'}));
+  const data   = sorted.map(h=>{cum+=(h.profit||0);return Math.round(cum*100)/100;});
+
+  chartInst = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[{
+        data, label:'Kumulatívny profit €',
+        borderColor:'#00e676', backgroundColor:'rgba(0,230,118,0.08)',
+        borderWidth:2, pointRadius:3, pointBackgroundColor:'#00e676',
+        fill:true, tension:.35,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'#4a5568',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#4a5568',font:{size:9},callback:v=>'€'+v},grid:{color:'rgba(255,255,255,.04)'}},
+      }
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════
+// GOAL
+// ════════════════════════════════════════════════════════
+function updateGoal() {
+  const goal = parseFloat(LS.get('monthly_goal')) || 500;
+  document.getElementById('goal-val').textContent = '€'+goal;
+  const roi = calcROI(getHistory());
+  const pct = Math.min(Math.max(roi.profit/goal*100,0),100);
+  document.getElementById('goal-fill').style.width = pct+'%';
+  document.getElementById('goal-pct').textContent = pct.toFixed(0)+'%';
+}
+
+function editGoal() {
+  const cur = LS.get('monthly_goal') || 500;
+  const v = prompt('Mesačný cieľ (€):', cur);
+  if (v && !isNaN(v)) { LS.set('monthly_goal', parseFloat(v)); updateGoal(); toast('✅ Cieľ uložený!'); }
+}
+
+// ════════════════════════════════════════════════════════
+// RECALC
+// ════════════════════════════════════════════════════════
+function recalc(inp, cid, stakes, impl_pct, profit_pct) {
   const tot = parseFloat(inp.value)||100;
-  const totEl   = document.getElementById(`tot_${cid}`);
-  const retEl   = document.getElementById(`ret_${cid}`);
-  const profEl  = document.getElementById(`profit_${cid}`);
-  const rowsEl  = document.getElementById(`rows_${cid}`);
-  if(totEl) totEl.textContent = tot.toFixed(0);
   const ret = tot/(impl_pct/100);
-  if(retEl)  retEl.textContent  = `€${ret.toFixed(2)}`;
-  if(profEl) profEl.textContent = `Profit: €${(ret-tot).toFixed(2)}`;
-  if(rowsEl) rowsEl.innerHTML = stakes.map(s => {
+  const prof = ret-tot;
+  const setEl = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  setEl(`tot_${cid}`, tot.toFixed(0));
+  setEl(`ret_${cid}`, '€'+ret.toFixed(2));
+  setEl(`pr_${cid}`,  '€'+prof.toFixed(2));
+  setEl(`eur_${cid}`, `≈ ${(tot*fxRates.eur).toFixed(0)}€ / ${(tot*fxRates.czk).toFixed(0)} CZK`);
+  stakes.forEach(s => {
     const st = Math.round((tot/(impl_pct/100))/s.odds*100)/100;
-    return `<div class="stake-row">
-      <div class="s-outcome">${s.outcome}</div>
-      <div>${bmLink(s.bm)}</div>
-      <div class="s-odds">${s.odds.toFixed(2)}</div>
-      <div class="s-amt">€${st.toFixed(2)}</div>
-    </div>`;
-  }).join('');
+    setEl(`amt_${cid}_${s.outcome.replace(/\W/g,'_')}`, '€'+st.toFixed(2));
+  });
 }
 
-// ════════════════════════════════════════════════════════════════
-// SAVE / UNSAVE
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// SAVE / BET
+// ════════════════════════════════════════════════════════
 function findOpp(id) {
-  const src = opps.length ? opps : (LS.get('cached_opps')||[]);
-  return src.find(o=>o.id===id) || getSaved().find(o=>o.id===id) || getBetted().find(o=>o.id===id);
+  const src = opps.length?opps:(LS.get('cached_opps')||[]);
+  return src.find(o=>o.id===id)||getSaved().find(o=>o.id===id)||getBetted().find(o=>o.id===id);
 }
 
 function saveOpp(id) {
-  const o = findOpp(id);
-  if (!o) return;
-  const saved = getSaved();
-  if (!saved.find(x=>x.id===id)) { saved.push({...o, saved_at: new Date().toISOString()}); saveSaved(saved); }
-  toast('⭐ Uložené!');
-  render();
+  const o=findOpp(id); if(!o) return;
+  const s=getSaved();
+  if(!s.find(x=>x.id===id)){s.push({...o,saved_at:new Date().toISOString()});saveSaved(s);}
+  toast('⭐ Uložené!'); render();
 }
 
-function unsaveOpp(id) {
-  saveSaved(getSaved().filter(x=>x.id!==id));
-  toast('Odstránené z uložených');
-  render();
-}
+function unsaveOpp(id) { saveSaved(getSaved().filter(x=>x.id!==id)); toast('Odstránené'); render(); }
 
-// ════════════════════════════════════════════════════════════════
-// BET MODAL
-// ════════════════════════════════════════════════════════════════
 function openBetModal(id) {
-  const o = findOpp(id);
-  if (!o) return;
-  pendingBetOpp = o;
-  document.getElementById('bet-modal-event').textContent = `${o.home} vs ${o.away} · ${o.time_str||''}`;
-  document.getElementById('bet-total-inp').value = 100;
+  const o=findOpp(id); if(!o) return;
+  pendingBetOpp=o;
+  document.getElementById('bet-modal-event').textContent=`${o.home} vs ${o.away} · ${o.time_str||''}`;
+  document.getElementById('bet-total-inp').value=100;
   updateBetPreview(100);
-  document.getElementById('bet-modal').style.display = 'flex';
+  document.getElementById('bet-modal').style.display='flex';
 }
-
-document.addEventListener('input', e => {
-  if (e.target.id === 'bet-total-inp' && pendingBetOpp) {
-    updateBetPreview(parseFloat(e.target.value)||100);
-  }
-});
 
 function updateBetPreview(tot) {
-  if (!pendingBetOpp) return;
-  const o = pendingBetOpp;
-  const ret = tot/(o.impl_pct/100);
-  const profit = ret - tot;
-  document.getElementById('bet-stakes-preview').innerHTML = `
-    <div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:.8rem;font-size:.83rem;">
+  const o=pendingBetOpp; if(!o) return;
+  const ret=tot/(o.impl_pct/100), profit=ret-tot;
+  document.getElementById('bet-stakes-preview').innerHTML=`
+    <div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:9px;padding:.75rem;font-size:.8rem;">
       ${o.stakes100.map(s=>{
-        const st = Math.round((tot/(o.impl_pct/100))/s.odds*100)/100;
+        const st=Math.round((tot/(o.impl_pct/100))/s.odds*100)/100;
         return `<div style="display:flex;justify-content:space-between;margin-bottom:.3rem;">
-          <span>${s.outcome} @ ${s.odds.toFixed(2)} <span style="color:var(--muted);font-size:.75rem">(${s.bm})</span></span>
+          <span>${s.outcome} @ ${s.odds.toFixed(2)} <span style="color:var(--muted);font-size:.72rem">(${s.bm})</span></span>
           <strong style="color:var(--green)">€${st.toFixed(2)}</strong>
         </div>`;
       }).join('')}
@@ -816,166 +947,153 @@ function updateBetPreview(tot) {
 }
 
 function confirmBet() {
-  if (!pendingBetOpp) return;
-  const o = pendingBetOpp;
-  const tot = parseFloat(document.getElementById('bet-total-inp').value)||100;
-  const ret = tot/(o.impl_pct/100);
-  const profit = ret - tot;
-
-  const myStakes = o.stakes100.map(s => ({
-    ...s,
-    my_stake: Math.round((tot/(o.impl_pct/100))/s.odds*100)/100,
-  }));
-
-  const record = {
-    ...o,
-    stakes100: myStakes,
-    bet_total: tot,
-    expected_return: ret.toFixed(2),
-    profit: parseFloat(profit.toFixed(2)),
-    bet_at: new Date().toISOString(),
-  };
-
-  const betted = getBetted();
-  if (!betted.find(x=>x.id===o.id)) { betted.push(record); saveBetted(betted); }
-
-  // Odstráň z uložených ak tam bol
+  const o=pendingBetOpp; if(!o) return;
+  const tot=parseFloat(document.getElementById('bet-total-inp').value)||100;
+  const ret=tot/(o.impl_pct/100), profit=ret-tot;
+  const myStakes=o.stakes100.map(s=>({...s,my_stake:Math.round((tot/(o.impl_pct/100))/s.odds*100)/100}));
+  const record={...o,stakes100:myStakes,bet_total:tot,expected_return:ret.toFixed(2),profit:parseFloat(profit.toFixed(2)),bet_at:new Date().toISOString()};
+  const b=getBetted();
+  if(!b.find(x=>x.id===o.id)){b.push(record);saveBetted(b);}
   saveSaved(getSaved().filter(x=>x.id!==o.id));
-
-  closeBetModal();
-  toast('✅ Stávka zaznamenaná!');
-  render();
+  closeBetModal(); toast('✅ Stávka zaznamenaná!'); render();
 }
 
-function closeBetModal() { document.getElementById('bet-modal').style.display='none'; pendingBetOpp=null; }
+function closeBetModal(){document.getElementById('bet-modal').style.display='none';pendingBetOpp=null;}
+function removeBet(id){saveBetted(getBetted().filter(x=>x.id!==id));toast('Stávka odstránená');render();}
 
-function removeBet(id) {
-  saveBetted(getBetted().filter(x=>x.id!==id));
-  toast('Stávka odstránená');
-  render();
-}
-
-// ════════════════════════════════════════════════════════════════
-// ROI CALC
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// ROI
+// ════════════════════════════════════════════════════════
 function calcROI(list) {
-  const total_bet = list.reduce((s,h)=>s+(h.bet_total||0),0);
-  const profit    = list.reduce((s,h)=>s+(h.profit||0),0);
-  const roi       = total_bet > 0 ? profit/total_bet*100 : 0;
-  return {total_bet, profit, roi};
+  const total_bet=list.reduce((s,h)=>s+(h.bet_total||0),0);
+  const profit=list.reduce((s,h)=>s+(h.profit||0),0);
+  return {total_bet, profit, roi: total_bet>0?profit/total_bet*100:0};
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// EXPORT CSV
+// ════════════════════════════════════════════════════════
+function exportCSV() {
+  const list = getHistory();
+  if (!list.length) { toast('História je prázdna'); return; }
+  const rows = [['Dátum','Zápas','Šport','Vsadené €','Očak. výnos €','Profit €','ROI %','Kurzy']];
+  list.forEach(h => {
+    const roi = h.bet_total?((h.profit||0)/h.bet_total*100).toFixed(1):'–';
+    const odds = (h.stakes100||[]).map(s=>`${s.outcome}@${s.odds}`).join(' | ');
+    rows.push([
+      new Date(h.bet_at).toLocaleDateString('sk-SK'),
+      `${h.home} vs ${h.away}`,
+      h.sportKey||'–',
+      h.bet_total||0,
+      h.expected_return||0,
+      (h.profit||0).toFixed(2),
+      roi,
+      odds,
+    ]);
+  });
+  const csv = rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href=url; a.download=`arbhunter_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('📥 CSV stiahnuté!');
+}
+
+// ════════════════════════════════════════════════════════
+// COUNTDOWNS – live update každú minútu
+// ════════════════════════════════════════════════════════
+function updateCountdowns() {
+  const src = opps.length?opps:(LS.get('cached_opps')||[]);
+  src.forEach(o => {
+    const el = document.getElementById(`cd_${o.id.slice(0,8)}`);
+    if (el) el.textContent = countdownStr(o.commence_time);
+  });
+}
+
+// ════════════════════════════════════════════════════════
 // TABS & FILTERS
-// ════════════════════════════════════════════════════════════════
-function setTab(tab, btn) {
-  activeTab = tab;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  btn.classList.add('on');
-  render();
-}
+// ════════════════════════════════════════════════════════
+function setTab(tab,btn){activeTab=tab;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');render();}
+function setFilter(btn,f){document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));btn.classList.add('on');sportFilter=f;render();}
 
-function setFilter(btn, f) {
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  btn.classList.add('on');
-  sportFilter = f;
-  render();
-}
-
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // TIMER
-// ════════════════════════════════════════════════════════════════
-function getLastFetch()  { const v=localStorage.getItem('last_fetch'); return v?new Date(v):null; }
-function setLastFetch()  { localStorage.setItem('last_fetch',new Date().toISOString()); }
-function hoursSinceLast(){ const l=getLastFetch(); return l?(Date.now()-l.getTime())/3600000:999; }
-function nextRefreshTime(){ const hh=new Date().getHours(); for(const h of REFRESH_HOURS){if(h>hh)return h;} return REFRESH_HOURS[0]+24; }
+// ════════════════════════════════════════════════════════
+const getLastFetch   = () => { const v=localStorage.getItem('last_fetch'); return v?new Date(v):null; };
+const setLastFetch   = () => localStorage.setItem('last_fetch',new Date().toISOString());
+const hoursSinceLast = () => { const l=getLastFetch(); return l?(Date.now()-l.getTime())/3600000:999; };
+const nextRefreshTime= () => { const h=new Date().getHours(); for(const x of REFRESH_HOURS){if(x>h)return x;} return REFRESH_HOURS[0]+24; };
 
 function updateRefreshUI() {
   const last=getLastFetch();
-  const nextH=nextRefreshTime();
+  const nH=nextRefreshTime();
   const lastStr=last?last.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}):'–';
-  const nextLbl=nextH>=24?`zajtra o ${String(REFRESH_HOURS[0]).padStart(2,'0')}:00`:`o ${String(nextH).padStart(2,'0')}:00`;
-  document.getElementById('cd-lbl').textContent=`Posledný: ${lastStr} · Ďalší auto`;
-  document.getElementById('cd').textContent=nextLbl;
+  const nLbl=nH>=24?`zajtra o ${String(REFRESH_HOURS[0]).padStart(2,'0')}:00`:`o ${String(nH).padStart(2,'0')}:00`;
+  document.getElementById('cd-lbl').textContent=`Posledný: ${lastStr} · Ďalší`;
+  document.getElementById('cd').textContent=nLbl;
 }
 
 function startTimer() {
   clearInterval(timer);
   timer=setInterval(()=>{
-    const now=new Date();
-    if(REFRESH_HOURS.includes(now.getHours())&&now.getMinutes()===0&&now.getSeconds()===0) fetchNow();
+    const n=new Date();
+    if(REFRESH_HOURS.includes(n.getHours())&&n.getMinutes()===0&&n.getSeconds()===0) fetchNow();
     updateRefreshUI();
+    updateCountdowns();
   },1000);
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // BOOKMAKER LINKS
-// ════════════════════════════════════════════════════════════════
-const BM_URLS = {
-  'Fortuna':'https://www.ifortuna.sk','Tipsport':'https://www.tipsport.sk',
-  'Niké':'https://www.nike.sk','Nike':'https://www.nike.sk',
-  'DOXXbet':'https://www.doxxbet.sk','Doxxbet':'https://www.doxxbet.sk',
-  'Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk',
-  'Tipsport CZ':'https://www.tipsport.cz','Fortuna CZ':'https://www.ifortuna.cz',
-  'Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz',
-  'Bet365':'https://www.bet365.com','bet365':'https://www.bet365.com',
-  'Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com',
-  'William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com',
-  'Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com',
-  'Betway':'https://www.betway.com','888sport':'https://www.888sport.com',
-  'Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com',
-  'Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com',
-  'Winamax':'https://www.winamax.fr','NetBet':'https://www.netbet.com',
-  'Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports',
-  'Casumo':'https://www.casumo.com/sports','Matchbook':'https://www.matchbook.com',
-  '1xBet':'https://www.1xbet.com','SBObet':'https://www.sbobet.com',
-};
-const BM_SK_MAP = {'Fortuna SK':'https://www.ifortuna.sk','Tipsport SK':'https://www.tipsport.sk','Niké':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Fortuna CZ':'https://www.ifortuna.cz','Tipsport CZ':'https://www.tipsport.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz'};
-const BM_EU_MAP = {'Bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','Winamax':'https://www.winamax.fr','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','Casumo':'https://www.casumo.com/sports','1xBet':'https://www.1xbet.com','Matchbook':'https://www.matchbook.com'};
+// ════════════════════════════════════════════════════════
+const BM_URLS={'Fortuna':'https://www.ifortuna.sk','Tipsport':'https://www.tipsport.sk','Niké':'https://www.nike.sk','Nike':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Doxxbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Tipsport CZ':'https://www.tipsport.cz','Fortuna CZ':'https://www.ifortuna.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz','Bet365':'https://www.bet365.com','bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','Winamax':'https://www.winamax.fr','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','Casumo':'https://www.casumo.com/sports','Matchbook':'https://www.matchbook.com','1xBet':'https://www.1xbet.com','SBObet':'https://www.sbobet.com'};
+const BM_SK_MAP={'Fortuna SK':'https://www.ifortuna.sk','Tipsport SK':'https://www.tipsport.sk','Niké':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Fortuna CZ':'https://www.ifortuna.cz','Tipsport CZ':'https://www.tipsport.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz'};
+const BM_EU_MAP={'Bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','1xBet':'https://www.1xbet.com','Matchbook':'https://www.matchbook.com'};
 
-function bmLink(name) {
-  const url = BM_URLS[name] || BM_URLS[Object.keys(BM_URLS).find(k=>name.toLowerCase().includes(k.toLowerCase()))];
-  return url
-    ? `<a href="${url}" target="_blank" class="bm-link">${name} 🔗</a>`
-    : `<span class="s-bm">${name}</span>`;
-}
+function bmLink(name){const url=BM_URLS[name]||BM_URLS[Object.keys(BM_URLS).find(k=>name.toLowerCase().includes(k.toLowerCase()))];return url?`<a href="${url}" target="_blank" class="bm-link">${name} 🔗</a>`:`<span class="s-bm">${name}</span>`;}
 
-function toggleBmDir() {
-  const el = document.getElementById('bm-dir');
-  if (el.style.display==='none'||!el.style.display) {
+function toggleBmDir(){
+  const el=document.getElementById('bm-dir');
+  if(el.style.display==='none'||!el.style.display){
     el.style.display='block';
-    document.getElementById('bm-sk').innerHTML=Object.entries(BM_SK_MAP).map(([n,u])=>`<a href="${u}" target="_blank" style="background:rgba(255,171,0,.1);border:1px solid rgba(255,171,0,.25);color:var(--amber);padding:.28rem .7rem;border-radius:99px;text-decoration:none;font-size:.78rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${n} 🔗</a>`).join('');
-    document.getElementById('bm-eu').innerHTML=Object.entries(BM_EU_MAP).map(([n,u])=>`<a href="${u}" target="_blank" style="background:rgba(68,138,255,.1);border:1px solid rgba(68,138,255,.25);color:var(--blue);padding:.28rem .7rem;border-radius:99px;text-decoration:none;font-size:.78rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${n} 🔗</a>`).join('');
-  } else { el.style.display='none'; }
+    document.getElementById('bm-sk').innerHTML=Object.entries(BM_SK_MAP).map(([n,u])=>`<a href="${u}" target="_blank" style="background:rgba(255,171,0,.1);border:1px solid rgba(255,171,0,.25);color:var(--amber);padding:.25rem .65rem;border-radius:99px;text-decoration:none;font-size:.75rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${n} 🔗</a>`).join('');
+    document.getElementById('bm-eu').innerHTML=Object.entries(BM_EU_MAP).map(([n,u])=>`<a href="${u}" target="_blank" style="background:rgba(68,138,255,.1);border:1px solid rgba(68,138,255,.25);color:var(--blue);padding:.25rem .65rem;border-radius:99px;text-decoration:none;font-size:.75rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${n} 🔗</a>`).join('');
+  } else el.style.display='none';
 }
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // HELPERS
-// ════════════════════════════════════════════════════════════════
-function setStatus(live,txt){ document.getElementById('dot').className='dot'+(live?' on':''); document.getElementById('status-txt').textContent=txt; }
-function showSpin(v){ document.getElementById('spin').style.display=v?'inline-block':'none'; }
-function showError(msg){ setStatus(false,msg); document.getElementById('content').innerHTML=emptyHtml('⚠️',msg,''); }
-function toast(msg){ const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500); }
+// ════════════════════════════════════════════════════════
+function setStatus(live,txt){document.getElementById('dot').className='dot'+(live?' on':'');document.getElementById('status-txt').textContent=txt;}
+function showSpin(v){document.getElementById('spin').style.display=v?'inline-block':'none';}
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);}
 
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // INIT
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function init() {
   if (!getKeys().length) { openKeyModal(); setStatus(false,'Chýba API kľúč'); }
   autoArchive();
   updateStats();
+  updateKeyStatus();
+  fetchFX();
 
   if (hoursSinceLast() >= MIN_INTERVAL_H) {
     if (getKeys().length) fetchNow();
   } else {
-    const cached = LS.get('cached_opps');
-    if (cached) { opps = cached; }
-    const last = getLastFetch();
-    setStatus(true, `Dáta z ${last?last.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}):'–'}`);
+    const cached=LS.get('cached_opps');
+    if(cached){opps=cached;}
+    const last=getLastFetch();
+    setStatus(true,`Dáta z ${last?last.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}):'–'}`);
     render();
   }
   updateRefreshUI();
   startTimer();
+  // Countdowns každú minútu
+  setInterval(updateCountdowns, 60000);
+  // FX každú hodinu
+  setInterval(fetchFX, 3600000);
 }
 
 init();
