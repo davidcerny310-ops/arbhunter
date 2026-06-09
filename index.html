@@ -630,6 +630,8 @@ function calcArb(event) {
 
   const best = {};
   for (const bm of bms) {
+    // Preskočiť bookmarkerov nedostupných v SK
+    if (BM_BLOCKED_SK.has(bm.title)) continue;
     for (const mkt of (bm.markets||[])) {
       if (mkt.key !== 'h2h') continue;
       for (const oc of (mkt.outcomes||[])) {
@@ -1177,6 +1179,14 @@ function startTimer() {
 // ═══════════════════════════════════════════════
 // BOOKMAKER LINKS – FIX #16: rel="noopener noreferrer"
 // ═══════════════════════════════════════════════
+// Kancelárie ktoré NIE SÚ dostupné zo Slovenska – skryjeme ich z arbitráží
+const BM_BLOCKED_SK = new Set([
+  'William Hill','Bet365','bet365','Ladbrokes','Paddy Power',
+  'Betfair','Betfair Exchange','Coral','Winamax','PMU',
+  'DraftKings','FanDuel','BetMGM','PointsBet','Caesars',
+  'SuperBook','BetOnline','Bovada','MyBookie','FoxBet',
+]);
+
 // Len kancelárie kde sa dá registrovať a vsadiť zo Slovenska
 const BM_URLS = {
   // 🇸🇰 SK licencované
