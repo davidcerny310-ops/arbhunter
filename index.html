@@ -1177,9 +1177,81 @@ function startTimer() {
 // ═══════════════════════════════════════════════
 // BOOKMAKER LINKS – FIX #16: rel="noopener noreferrer"
 // ═══════════════════════════════════════════════
-const BM_URLS = {'Fortuna':'https://www.ifortuna.sk','Tipsport':'https://www.tipsport.sk','Niké':'https://www.nike.sk','Nike':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Doxxbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Tipsport CZ':'https://www.tipsport.cz','Fortuna CZ':'https://www.ifortuna.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz','Bet365':'https://www.bet365.com','bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','Winamax':'https://www.winamax.fr','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','Casumo':'https://www.casumo.com/sports','Matchbook':'https://www.matchbook.com','1xBet':'https://www.1xbet.com','SBObet':'https://www.sbobet.com'};
-const BM_SK_MAP = {'Fortuna SK':'https://www.ifortuna.sk','Tipsport SK':'https://www.tipsport.sk','Niké':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Fortuna CZ':'https://www.ifortuna.cz','Tipsport CZ':'https://www.tipsport.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz'};
-const BM_EU_MAP = {'Bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','1xBet':'https://www.1xbet.com','Matchbook':'https://www.matchbook.com'};
+// Len kancelárie kde sa dá registrovať a vsadiť zo Slovenska
+const BM_URLS = {
+  // 🇸🇰 SK licencované
+  'Fortuna':'https://www.ifortuna.sk','Tipsport':'https://www.tipsport.sk',
+  'Niké':'https://www.nike.sk','Nike':'https://www.nike.sk',
+  'DOXXbet':'https://www.doxxbet.sk','Doxxbet':'https://www.doxxbet.sk',
+  'Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk',
+  // 🇨🇿 CZ dostupné z SK
+  'Tipsport CZ':'https://www.tipsport.cz','Fortuna CZ':'https://www.ifortuna.cz',
+  'Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz',
+  // 🌍 Medzinárodné – overene akceptujú SK hráčov
+  'Pinnacle':'https://www.pinnacle.com',
+  'Bwin':'https://www.bwin.com',
+  'Unibet':'https://www.unibet.com',
+  'Betsson':'https://www.betsson.com',
+  'Betclic':'https://www.betclic.com',
+  'NetBet':'https://www.netbet.com',
+  'Marathonbet':'https://www.marathonbet.com',
+  '1xBet':'https://www.1xbet.com',
+  '22Bet':'https://www.22bet.com',
+  'Melbet':'https://melbet.com',
+  'Mostbet':'https://mostbet.com',
+  'BetWinner':'https://www.betwinner.com',
+  'Parimatch':'https://parimatch.com',
+  'Coolbet':'https://www.coolbet.com',
+  'NordicBet':'https://www.nordicbet.com',
+  'Bethard':'https://www.bethard.com',
+  'GG.bet':'https://gg.bet',
+  'Sportsbet.io':'https://sportsbet.io',
+  'Cloudbet':'https://www.cloudbet.com',
+  'Betway':'https://www.betway.com',
+  '888sport':'https://www.888sport.com',
+  'LeoVegas':'https://www.leovegas.com/sports',
+  'Casumo':'https://www.casumo.com/sports',
+  'Matchbook':'https://www.matchbook.com',
+  'SBObet':'https://www.sbobet.com',
+  'SpinBetter':'https://spinbetter.com',
+};
+
+const BM_SK_MAP = {
+  'Fortuna SK':'https://www.ifortuna.sk',
+  'Tipsport SK':'https://www.tipsport.sk',
+  'Niké':'https://www.nike.sk',
+  'DOXXbet':'https://www.doxxbet.sk',
+  'Tipos':'https://www.tipos.sk',
+  'Synottip':'https://www.synottip.sk',
+  'Fortuna CZ':'https://www.ifortuna.cz',
+  'Tipsport CZ':'https://www.tipsport.cz',
+  'Chance':'https://www.chance.cz',
+  'Sazka':'https://www.sazka.cz',
+};
+
+const BM_EU_MAP = {
+  'Pinnacle':'https://www.pinnacle.com',
+  'Bwin':'https://www.bwin.com',
+  'Unibet':'https://www.unibet.com',
+  'Betsson':'https://www.betsson.com',
+  'Betclic':'https://www.betclic.com',
+  'NetBet':'https://www.netbet.com',
+  'Marathonbet':'https://www.marathonbet.com',
+  '1xBet':'https://www.1xbet.com',
+  '22Bet':'https://www.22bet.com',
+  'Melbet':'https://melbet.com',
+  'Mostbet':'https://mostbet.com',
+  'BetWinner':'https://www.betwinner.com',
+  'Parimatch':'https://parimatch.com',
+  'Coolbet':'https://www.coolbet.com',
+  'GG.bet':'https://gg.bet',
+  'Betway':'https://www.betway.com',
+  '888sport':'https://www.888sport.com',
+  'LeoVegas':'https://www.leovegas.com/sports',
+  'Matchbook':'https://www.matchbook.com',
+  'SpinBetter':'https://spinbetter.com',
+  'Sportsbet.io':'https://sportsbet.io',
+};
 
 function bmLink(name) {
   if (!name) return '<span class="s-bm">–</span>';
