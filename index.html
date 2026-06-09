@@ -28,7 +28,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:radial-gradient(ellipse 70% 50% at 15% 0%,rgba(0,80,40,0.18) 0%,transparent 60%),
              radial-gradient(ellipse 50% 40% at 85% 90%,rgba(20,40,100,0.2) 0%,transparent 60%);}
 #app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:1rem 1rem 5rem}
-
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0 1rem;border-bottom:1px solid var(--border);margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem}
 .logo{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900;letter-spacing:.06em}
 .logo-arb{background:linear-gradient(135deg,var(--green),#00b0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -41,39 +40,33 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .icon-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:9px;padding:.35rem .65rem;cursor:pointer;font-size:.75rem;color:var(--text);transition:all .2s;white-space:nowrap}
 .icon-btn:hover{background:rgba(255,255,255,0.1)}
-
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:.7rem .4rem;text-align:center}
 .stat-n{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900}
 .stat-l{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.1rem}
-
 .goal-bar{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:.8rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem}
 .goal-lbl{font-size:.72rem;color:var(--muted);white-space:nowrap}
 .goal-track{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
 .goal-fill{height:100%;background:linear-gradient(90deg,var(--green),#00e5ff);border-radius:99px;transition:width .5s ease}
 .goal-pct{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:800;color:var(--green);white-space:nowrap}
 .goal-edit{font-size:.7rem;color:var(--muted);cursor:pointer;text-decoration:underline;white-space:nowrap}
-
 .fx-bar{display:flex;align-items:center;gap:.6rem;font-size:.7rem;color:var(--muted);margin-bottom:.9rem;padding:.5rem .8rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;flex-wrap:wrap}
 .fx-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--amber)}
-
 .rbar{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;font-size:.72rem;color:var(--muted);flex-wrap:wrap}
 .spin{width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:rot .7s linear infinite;display:none;flex-shrink:0}
 @keyframes rot{to{transform:rotate(360deg)}}
 .cd{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:800;color:var(--green)}
 .prog-track{flex:1;min-width:40px;height:2px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),#00b0ff);border-radius:99px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),#00b0ff);border-radius:99px;transition:width 1s linear}
 .refresh-btn{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:800;padding:.3rem .8rem;border-radius:7px;background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.4);color:var(--green);cursor:pointer}
 .key-status{font-size:.68rem;color:var(--muted)}
 .key-status span{color:var(--green)}
-
 .tabs{display:flex;gap:.3rem;margin-bottom:1.1rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:13px;padding:.28rem}
 .tab{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.03em;padding:.45rem .2rem;border-radius:9px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;text-align:center}
 .tab.on{background:rgba(255,255,255,.08);color:var(--text)}
 .tab-badge{display:inline-block;background:var(--green);color:#000;border-radius:99px;font-size:.58rem;padding:.04rem .3rem;margin-left:.2rem;font-weight:900;vertical-align:middle}
 .tab-badge.amber{background:var(--amber)}
 .tab-badge.purple{background:var(--purple)}
-
 .toolbar{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;margin-bottom:.9rem}
 .chip{font-family:'Barlow Condensed',sans-serif;font-size:.77rem;font-weight:700;letter-spacing:.03em;padding:.25rem .7rem;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
 .chip.on{background:var(--green-dim);border-color:var(--green);color:var(--green)}
@@ -81,12 +74,10 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .spacer{flex:1}
 .min-wrap{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted)}
 .mini-input{width:50px;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:.22rem .4rem;color:var(--text);font-size:.82rem;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700}
-
 .sec-hdr{display:flex;align-items:center;gap:.5rem;margin:.5rem 0 .7rem}
 .sec-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:.04em}
 .sec-count{font-size:.68rem;color:var(--muted);background:rgba(255,255,255,.06);padding:.12rem .45rem;border-radius:99px}
 .sec-line{flex:1;height:1px;background:var(--border)}
-
 .cards{display:flex;flex-direction:column;gap:.7rem}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:15px;overflow:hidden;transition:border-color .2s,box-shadow .2s;animation:fadeUp .25s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
@@ -94,7 +85,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .card.warm{border-color:rgba(255,171,0,.35)}
 .card.cool{border-color:rgba(68,138,255,.25)}
 .card.low{border-color:rgba(255,255,255,.1)}
-
 .card-head{display:flex;align-items:center;gap:.65rem;padding:.85rem .95rem .75rem;border-bottom:1px solid var(--border)}
 .sport-ico{font-size:1.2rem;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border-radius:8px;flex-shrink:0}
 .ev-info{flex:1;min-width:0}
@@ -113,13 +103,10 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .risk-low{background:rgba(0,230,118,.15);color:var(--green)}
 .risk-med{background:rgba(255,171,0,.15);color:var(--amber)}
 .risk-high{background:rgba(255,82,82,.15);color:var(--red)}
-
 .odds-change{font-size:.62rem;padding:.08rem .35rem;border-radius:99px;white-space:nowrap}
 .odds-up{background:rgba(0,230,118,.15);color:var(--green)}
 .odds-down{background:rgba(255,82,82,.15);color:var(--red)}
 .odds-same{background:rgba(255,255,255,.06);color:var(--muted)}
-
-/* FIX #16: stake-row grid 3 stĺpce na mobile, 4 na desktop */
 .stakes-area{padding:.75rem .95rem}
 .stakes-hdr{font-size:.63rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center}
 .stake-row{display:grid;grid-template-columns:1fr auto auto auto;gap:.35rem;align-items:center;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
@@ -129,24 +116,20 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .bm-link{font-size:.65rem;color:var(--blue);background:var(--blue-dim);border:1px solid rgba(68,138,255,.2);padding:.13rem .38rem;border-radius:5px;white-space:nowrap;text-decoration:none;display:inline-block}
 .s-odds{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;color:var(--blue);text-align:right;min-width:34px}
 .s-amt{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--green);text-align:right;min-width:48px}
-
 .calc-bar{display:flex;align-items:center;gap:.5rem;padding:.6rem .95rem;background:rgba(0,0,0,.2);border-top:1px solid var(--border);flex-wrap:wrap}
 .calc-lbl{font-size:.68rem;color:var(--muted);white-space:nowrap}
 .calc-inp{width:68px;background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:7px;padding:.22rem .4rem;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;text-align:center}
 .calc-inp:focus{outline:none;border-color:var(--green)}
 .calc-res{margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:700;color:var(--green);text-align:right}
-
 .action-bar{display:flex;gap:.35rem;flex-wrap:wrap;padding:.6rem .95rem;border-top:1px solid var(--border);align-items:center}
 .act-btn{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.02em;padding:.28rem .7rem;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;transition:all .2s}
 .act-btn.save{border-color:rgba(192,132,252,.4);color:var(--purple);background:var(--purple-dim)}
 .act-btn.bet{border-color:rgba(0,230,118,.4);color:var(--green);background:var(--green-dim)}
 .act-btn.del{border-color:rgba(255,82,82,.3);color:var(--red);background:var(--red-dim)}
-
 .betted-info{padding:.75rem .95rem;display:flex;gap:1rem;flex-wrap:wrap}
 .bi-cell{flex:1;min-width:70px}
 .bi-val{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800}
 .bi-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.1rem}
-
 .hist-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:.9rem;margin-bottom:.55rem;animation:fadeUp .25s ease both}
 .hist-head{display:flex;align-items:center;gap:.55rem;margin-bottom:.6rem}
 .hist-teams{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -154,7 +137,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .hist-cell{flex:1;min-width:65px}
 .hist-val{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800}
 .hist-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.08rem}
-
 .roi-box{background:var(--surface);border:1px solid rgba(0,230,118,.2);border-radius:14px;padding:1rem;margin-bottom:1.2rem}
 .roi-title{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--green);margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
 .roi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.9rem}
@@ -162,11 +144,9 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .roi-val{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900}
 .roi-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.08rem}
 .chart-wrap{position:relative;height:140px}
-
 .bm-dir{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:.9rem;margin-bottom:1rem;display:none}
 .bm-dir-title{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--amber);margin-bottom:.7rem}
 .bm-section-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:.5rem 0 .35rem}
-
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:1rem}
 .modal{background:#0f1928;border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:1.6rem;width:100%;max-width:460px;box-shadow:0 40px 80px rgba(0,0,0,.7);max-height:88vh;overflow-y:auto}
 .modal-title{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--amber);margin-bottom:.35rem}
@@ -184,19 +164,18 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .key-slot-num{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;color:var(--muted);min-width:18px}
 .key-slot-val{font-size:.75rem;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .key-del{font-size:.7rem;color:var(--red);background:var(--red-dim);border:none;border-radius:5px;padding:.12rem .35rem;cursor:pointer}
-
+/* Goal modal input */
+.goal-modal-input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(0,230,118,.3);border-radius:10px;padding:.75rem 1rem;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;text-align:center;margin:1rem 0}
+.goal-modal-input:focus{outline:none;border-color:var(--green)}
 .empty{text-align:center;padding:2.5rem 1rem;color:var(--muted)}
 .empty-ico{font-size:2.3rem;margin-bottom:.6rem}
 .empty-ttl{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
-
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#0f1928;border:1px solid var(--green);border-radius:11px;padding:.6rem 1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;color:var(--green);z-index:300;pointer-events:none;animation:toastIn .3s ease;white-space:nowrap}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
 @media(max-width:520px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .stat-n{font-size:1.3rem}
   .roi-grid{grid-template-columns:repeat(2,1fr)}
-  /* FIX #16: na mobile skry bm-link ale nechaj grid 4 stĺpce */
   .bm-link,.s-bm{display:none}
 }
 </style>
@@ -233,7 +212,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   <span class="goal-lbl">🎯 Mesačný cieľ:</span>
   <div class="goal-track"><div class="goal-fill" id="goal-fill" style="width:0%"></div></div>
   <span class="goal-pct" id="goal-pct">0%</span>
-  <span class="goal-edit" onclick="editGoal()">⚙️ <span id="goal-val">€500</span></span>
+  <span class="goal-edit" onclick="openGoalModal()">⚙️ <span id="goal-val">€500</span></span>
 </div>
 
 <div class="fx-bar">
@@ -248,7 +227,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   <span class="cd" id="cd">–</span>
   <div class="prog-track"><div class="prog-fill" id="prog" style="width:100%"></div></div>
   <span class="key-status">Kľúče: <span id="key-count">0</span></span>
-  <button class="refresh-btn" onclick="fetchNow()">🔄 Refresh teraz</button>
+  <button class="refresh-btn" id="refresh-btn" onclick="manualRefresh()">🔄 Refresh teraz</button>
 </div>
 
 <div class="tabs">
@@ -277,10 +256,10 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <div class="modal-bg" id="key-modal" style="display:none">
 <div class="modal">
   <div class="modal-title">🔑 API Kľúče</div>
-  <div class="modal-sub">Pridaj kľúče z <a href="https://the-odds-api.com" target="_blank">the-odds-api.com</a>. Všetky sa použijú paralelne – viac kľúčov = viac bookmarkerov = viac arbitráží.</div>
+  <div class="modal-sub">Pridaj kľúče z <a href="https://the-odds-api.com" target="_blank" rel="noopener noreferrer">the-odds-api.com</a>. Všetky sa použijú paralelne – viac kľúčov = viac bookmarkerov = viac arbitráží.</div>
   <div id="key-slots"></div>
   <div class="field-label" style="margin-top:.7rem">Pridať nový kľúč</div>
-  <input class="text-input" id="new-key-inp" type="text" placeholder="Vlož API kľúč...">
+  <input class="text-input" id="new-key-inp" type="text" placeholder="Vlož API kľúč..." autocomplete="off">
   <div class="btn-row">
     <button class="btn btn-green" onclick="addKey()">➕ Pridať</button>
     <button class="btn btn-ghost" onclick="closeKeyModal()">Zavrieť</button>
@@ -303,13 +282,27 @@ body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 </div>
 </div>
 
+<!-- GOAL MODAL (FIX #6: namiesto prompt()) -->
+<div class="modal-bg" id="goal-modal" style="display:none">
+<div class="modal">
+  <div class="modal-title">🎯 Mesačný Cieľ</div>
+  <div class="modal-sub">Nastav svoj mesačný cieľový profit v €</div>
+  <input class="goal-modal-input" id="goal-inp" type="number" min="1" placeholder="500">
+  <div class="btn-row">
+    <button class="btn btn-green" onclick="saveGoal()">✅ Uložiť</button>
+    <button class="btn btn-ghost" onclick="closeGoalModal()">Zrušiť</button>
+  </div>
+</div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const REFRESH_HOURS = [6, 18];
-const MIN_INTERVAL_H = 6;
-const MAX_KEYS_PARALLEL = 3; // FIX #5: max 3 kľúče naraz aby sme neprekročili rate limit
+const REFRESH_HOURS    = [6, 18];
+const MIN_INTERVAL_H   = 11;        // FIX #5: 12h medzi auto-refreshmi, -1h tolerancia
+const MAX_KEYS_PARALLEL = 3;        // FIX #2: max 3 kľúče paralelne (rate limit)
+const HISTORY_MAX_DAYS  = 30;
 const SPORTS = [
   'tennis_atp','tennis_wta','tennis_atp_french_open','tennis_wta_french_open',
   'tennis_atp_wimbledon','tennis_atp_us_open',
@@ -321,89 +314,143 @@ const SPORT_EMOJI = {tennis:'🎾',basketball:'🏀',americanfootball:'🏈',bas
 // ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
-let opps = [];
-let sportFilter = 'all';
-let activeTab = 'new';
-let timer = null;
+let opps          = [];
+let sportFilter   = 'all';
+let activeTab     = 'new';
+let timerInterval = null;
 let pendingBetOpp = null;
-let fxRates = {eur:0.92, czk:23.5};
-let prevOdds = {};
-let chartInst = null;
-let lastAutoRefresh = 0; // FIX #12: zabraň dvojitému refreshu
+let fxRates       = {eur:0.92, czk:23.5};
+let prevOdds      = {};
+let chartInst     = null;
+let isFetching    = false;   // FIX #2: ochrana pred súbežnými volaniami
+let lastAutoMin   = -1;      // FIX #12: ochrana pred dvojitým auto-refreshom
+let cachedSaved   = null;    // FIX #8: cache pre getSaved
+let cachedBetted  = null;    // FIX #8: cache pre getBetted
 
 // ═══════════════════════════════════════════════
-// STORAGE
+// SAFE STORAGE – FIX #17: error handling pre localStorage
 // ═══════════════════════════════════════════════
 const LS = {
-  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
-  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
+  get(k) {
+    try { return JSON.parse(localStorage.getItem(k)); }
+    catch { return null; }
+  },
+  set(k, v) {
+    try {
+      localStorage.setItem(k, JSON.stringify(v));
+      return true;
+    } catch(e) {
+      // QuotaExceededError – pokús sa vyčistiť cache
+      if (e.name === 'QuotaExceededError' || e.code === 22) {
+        try { localStorage.removeItem('cached_opps'); localStorage.setItem(k, JSON.stringify(v)); return true; }
+        catch { toast('⚠️ Pamäť tabletu je plná! Vymaž históriu.'); return false; }
+      }
+      return false;
+    }
+  },
+  del(k) { try { localStorage.removeItem(k); } catch {} }
 };
-const getSaved  = () => LS.get('saved_opps')  || [];
-const getBetted = () => LS.get('betted_opps') || [];
 
-// FIX #2: getHistory filtruje podľa bet_at ALEBO archived_at
-const getHistory = () => {
+// ═══════════════════════════════════════════════
+// STORAGE HELPERS – FIX #8: cache, FIX #4: čistenie histórie
+// ═══════════════════════════════════════════════
+function getSaved()  { if (!cachedSaved)  cachedSaved  = LS.get('saved_opps')  || []; return cachedSaved; }
+function getBetted() { if (!cachedBetted) cachedBetted = LS.get('betted_opps') || []; return cachedBetted; }
+function invalidateCache() { cachedSaved = null; cachedBetted = null; }
+
+function saveSaved(a)  { cachedSaved  = a; LS.set('saved_opps',  a); }
+function saveBetted(a) { cachedBetted = a; LS.set('betted_opps', a); }
+
+function getHistory() {
   const h = LS.get('bet_history') || [];
-  const cutoff = Date.now() - 30*24*3600*1000;
+  const cutoff = Date.now() - HISTORY_MAX_DAYS*24*3600*1000;
   return h.filter(x => {
     const ts = x.bet_at || x.archived_at;
     return ts && new Date(ts).getTime() > cutoff;
   });
-};
+}
 
-const saveSaved   = a => LS.set('saved_opps', a);
-const saveBetted  = a => LS.set('betted_opps', a);
-// FIX #8: saveHistory ukladá celú históriu (nielen filtrovanú)
-const saveHistory = a => LS.set('bet_history', a);
-const getRawHistory = () => LS.get('bet_history') || [];
+function saveHistory(a) {
+  // FIX #4: fyzicky vymaž záznamy staršie ako 30 dní pri každom uložení
+  const cutoff = Date.now() - HISTORY_MAX_DAYS*24*3600*1000;
+  const clean = a.filter(x => {
+    const ts = x.bet_at || x.archived_at;
+    return ts && new Date(ts).getTime() > cutoff;
+  });
+  LS.set('bet_history', clean);
+}
+
+// FIX #12: XSS ochrana – escape HTML špeciálnych znakov
+function esc(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
 
 // ═══════════════════════════════════════════════
 // AUTO ARCHIVE
 // ═══════════════════════════════════════════════
 function autoArchive() {
   const betted = getBetted();
+  if (!betted.length) return;
   const now = Date.now();
   const active = [];
-  // FIX #8: načítaj celú históriu, nie filtrovanú
-  const history = getRawHistory();
+  const history = LS.get('bet_history') || []; // raw, nie filtrovaný
   let changed = false;
   for (const b of betted) {
     const mt = b.commence_time ? new Date(b.commence_time).getTime() : 0;
     if (mt && now > mt + 2*3600*1000) {
-      // FIX #2: uisti sa že bet_at existuje
-      history.push({...b, archived_at: new Date().toISOString(), bet_at: b.bet_at || new Date().toISOString()});
+      history.push({
+        ...b,
+        archived_at: new Date().toISOString(),
+        bet_at: b.bet_at || new Date().toISOString()
+      });
       changed = true;
     } else {
       active.push(b);
     }
   }
-  if (changed) { saveBetted(active); saveHistory(history); }
+  if (changed) {
+    saveBetted(active);
+    saveHistory(history);
+  }
 }
 
-// FIX #4: autoSaveUnexpired - čistenie expirovaných + ochrana pred duplikátmi
+// FIX #3+#11: autoSaveUnexpired – len potrebné polia, ochrana pred veľkosťou
 function autoSaveUnexpired(results) {
   const now = Date.now();
-  // Načítaj aktuálne uložené
   let saved = getSaved();
-  const betted = getBetted().map(x => x.id);
+  const bettedIds = new Set(getBetted().map(x => x.id));
 
-  // Odober expirované auto-uložené záznamy
+  // Vymaž expirované auto-záznamy
   saved = saved.filter(o => {
-    if (!o.auto) return true; // manuálne uložené nechaj
-    if (!o.commence_time) return true;
-    return new Date(o.commence_time).getTime() > now - 3600000; // max 1h po začiatku
+    if (!o.auto) return true;
+    if (!o.commence_time) return false; // FIX #11: bez commence_time zahoď
+    return new Date(o.commence_time).getTime() > now - 3600000;
   });
 
   const existingIds = new Set(saved.map(x => x.id));
   let added = 0;
 
   for (const o of results) {
-    if (existingIds.has(o.id)) continue; // FIX #3: presná kontrola cez Set
-    if (betted.includes(o.id)) continue;
-    const matchTime = o.commence_time ? new Date(o.commence_time).getTime() : 0;
-    if (matchTime && matchTime < now) continue;
-    saved.push({...o, saved_at: new Date().toISOString(), auto: true});
-    existingIds.add(o.id); // FIX #3: pridaj do Set okamžite
+    if (existingIds.has(o.id) || bettedIds.has(o.id)) continue;
+    if (!o.commence_time) continue; // FIX #11: preskočiť bez dátumu
+    const matchTime = new Date(o.commence_time).getTime();
+    if (matchTime < now) continue;
+
+    // FIX #3: ulož len minimálne polia (bez bookmarkerov) – šetrí localStorage
+    saved.push({
+      id: o.id, sport: o.sport, sportKey: o.sportKey, emoji: o.emoji,
+      home: o.home, away: o.away, commence_time: o.commence_time,
+      time_str: o.time_str, profit_pct: o.profit_pct, impl_pct: o.impl_pct,
+      stakes100: o.stakes100, risk: o.risk,
+      saved_at: new Date().toISOString(), auto: true
+    });
+    existingIds.add(o.id);
     added++;
   }
 
@@ -425,7 +472,11 @@ function addKey() {
   if (keys.length >= 8) { toast('Maximum 8 kľúčov'); return; }
   keys.push(k); saveKeys(keys);
   document.getElementById('new-key-inp').value = '';
-  renderKeySlots(); toast('✅ Kľúč pridaný!'); updateKeyStatus();
+  renderKeySlots();
+  updateKeyStatus();
+  toast('✅ Kľúč pridaný!');
+  // FIX #1: ak to bol prvý kľúč, spusti appku
+  if (keys.length === 1) { closeKeyModal(); bootApp(); }
 }
 
 function delKey(i) {
@@ -441,7 +492,7 @@ function renderKeySlots() {
         <span class="key-slot-val">${k.substring(0,8)}••••${k.slice(-4)}</span>
         <button class="key-del" onclick="delKey(${i})">🗑</button>
       </div>`).join('')
-    : '<div style="color:var(--muted);font-size:.78rem;margin-bottom:.7rem;">Žiadne kľúče.</div>';
+    : '<div style="color:var(--muted);font-size:.78rem;margin-bottom:.7rem;">Žiadne kľúče. Pridaj aspoň jeden.</div>';
 }
 
 function updateKeyStatus() {
@@ -452,19 +503,17 @@ function openKeyModal()  { renderKeySlots(); document.getElementById('key-modal'
 function closeKeyModal() { document.getElementById('key-modal').style.display='none'; }
 
 // ═══════════════════════════════════════════════
-// FX RATES – FIX #10: použij open.er-api.com (má CORS)
+// FX – FIX #10: open.er-api.com má CORS
 // ═══════════════════════════════════════════════
 async function fetchFX() {
   try {
     const r = await fetch('https://open.er-api.com/v6/latest/USD');
+    if (!r.ok) throw new Error();
     const d = await r.json();
-    if (d.rates) {
-      fxRates.eur = d.rates.EUR || 0.92;
-      fxRates.czk = d.rates.CZK || 23.5;
-    }
+    if (d.rates) { fxRates.eur = d.rates.EUR||0.92; fxRates.czk = d.rates.CZK||23.5; }
     document.getElementById('fx-eur').textContent = fxRates.eur.toFixed(4);
     document.getElementById('fx-czk').textContent = fxRates.czk.toFixed(2);
-    document.getElementById('fx-time').textContent = 'Kurz: ' + new Date().toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('fx-time').textContent = 'Kurz: '+new Date().toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
   } catch {
     document.getElementById('fx-eur').textContent = '~0.92';
     document.getElementById('fx-czk').textContent = '~23.5';
@@ -472,69 +521,89 @@ async function fetchFX() {
 }
 
 // ═══════════════════════════════════════════════
-// FETCH – FIX #5: max MAX_KEYS_PARALLEL kľúče
+// FETCH – FIX #2: ochrana isFetching
 // ═══════════════════════════════════════════════
+function manualRefresh() {
+  if (isFetching) { toast('⏳ Načítavam...'); return; }
+  fetchNow();
+}
+
 async function fetchNow() {
+  if (isFetching) return; // FIX #2
   const keys = getKeys();
   if (!keys.length) { openKeyModal(); setStatus(false,'Chýba API kľúč'); return; }
 
+  isFetching = true;
+  document.getElementById('refresh-btn').disabled = true;
   showSpin(true);
   setStatus(false,'Načítavam...');
 
-  // Ulož predošlé kurzy pre porovnanie zmien
+  // Uložíme predošlé kurzy
   prevOdds = {};
   for (const o of opps) {
+    if (!o.id) continue;
     prevOdds[o.id] = {};
     for (const s of (o.stakes100||[])) prevOdds[o.id][s.outcome] = s.odds;
   }
 
-  // FIX #5: použi max 3 kľúče naraz, každý sťahuje všetky športy
   const activeKeys = keys.slice(0, MAX_KEYS_PARALLEL);
-  const allPromises = activeKeys.flatMap(key =>
-    SPORTS.map(sport => fetchSport(key, sport))
-  );
+  const allPromises = activeKeys.flatMap(key => SPORTS.map(sport => fetchSport(key, sport)));
+  const settled = await Promise.allSettled(allPromises);
 
-  const results = await Promise.allSettled(allPromises);
-
-  // Spoj bookmarkerov z rôznych kľúčov pre ten istý event
+  // Spoj bookmarkerov z rôznych kľúčov
   const eventMap = {};
-  results.forEach(r => {
-    if (r.status !== 'fulfilled' || !r.value) return;
+  let invalidKeyDetected = false;
+  settled.forEach(r => {
+    if (r.status !== 'fulfilled') return;
+    if (r.value === 'INVALID_KEY') { invalidKeyDetected = true; return; }
+    if (!r.value) return;
     r.value.forEach(ev => {
-      if (!ev.id) return; // FIX #6: preskoč eventy bez ID
+      if (!ev.id) return; // FIX #6: eventy bez ID preskočíme
       if (!eventMap[ev.id]) {
         eventMap[ev.id] = {...ev, bookmakers: [...(ev.bookmakers||[])]};
       } else {
         const existing = new Set(eventMap[ev.id].bookmakers.map(b=>b.title));
         for (const bm of (ev.bookmakers||[])) {
-          if (!existing.has(bm.title)) {
-            eventMap[ev.id].bookmakers.push(bm);
-            existing.add(bm.title);
-          }
+          if (!existing.has(bm.title)) { eventMap[ev.id].bookmakers.push(bm); existing.add(bm.title); }
         }
       }
     });
   });
 
-  const allEvents = Object.values(eventMap);
+  if (invalidKeyDetected) {
+    // FIX #18: informuj o neplatnom kľúči
+    toast('⚠️ Jeden z kľúčov je neplatný – skontroluj nastavenia');
+  }
 
+  const allEvents = Object.values(eventMap);
   const arbResults = [];
   for (const ev of allEvents) {
     const arb = calcArb(ev);
     if (arb) arbResults.push(arb);
   }
-
   arbResults.sort((a,b) => b.profit_pct - a.profit_pct);
+
   opps = arbResults;
-  LS.set('cached_opps', arbResults);
+  // FIX #3: do cache ulož len minimálne polia
+  LS.set('cached_opps', arbResults.map(o => ({
+    id:o.id, sport:o.sport, sportKey:o.sportKey, emoji:o.emoji,
+    home:o.home, away:o.away, commence_time:o.commence_time,
+    time_str:o.time_str, profit_pct:o.profit_pct, impl_pct:o.impl_pct,
+    stakes100:o.stakes100, risk:o.risk
+  })));
   setLastFetch();
 
+  // FIX #20: autoArchive PRED autoSaveUnexpired
+  invalidateCache();
+  autoArchive();
   autoSaveUnexpired(arbResults);
 
-  const now = new Date().toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
-  setStatus(true, `Živé · ${now} · ${allEvents.length} zápasov · ${arbResults.length} arbitráží`);
+  const nowStr = new Date().toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'});
+  setStatus(true, `Živé · ${nowStr} · ${allEvents.length} zápasov · ${arbResults.length} arbitráží`);
   showSpin(false);
-  autoArchive();
+  document.getElementById('refresh-btn').disabled = false;
+  isFetching = false;
+  invalidateCache();
   updateStats();
   updateKeyStatus();
   render();
@@ -544,10 +613,11 @@ async function fetchSport(key, sport) {
   const url = `https://api.the-odds-api.com/v4/sports/${sport}/odds?apiKey=${key}&regions=eu&markets=h2h&oddsFormat=decimal&dateFormat=iso`;
   try {
     const r = await fetch(url);
+    if (r.status === 401) return 'INVALID_KEY'; // FIX #18
     if (!r.ok) return null;
     const d = await r.json();
     if (!Array.isArray(d)) return null;
-    return d.map(ev => ({...ev, _sport: sport})); // FIX #1: nastav _sport
+    return d.map(ev => ({...ev, _sport: sport}));
   } catch { return null; }
 }
 
@@ -563,7 +633,7 @@ function calcArb(event) {
     for (const mkt of (bm.markets||[])) {
       if (mkt.key !== 'h2h') continue;
       for (const oc of (mkt.outcomes||[])) {
-        if (!best[oc.name] || oc.price > best[oc.name].odds)
+        if (oc.price > 0 && (!best[oc.name] || oc.price > best[oc.name].odds))
           best[oc.name] = {odds: oc.price, bm: bm.title};
       }
     }
@@ -578,7 +648,6 @@ function calcArb(event) {
   const profit_pct = Math.round((1/impl - 1)*10000)/100;
   if (profit_pct < 0.05) return null;
 
-  // FIX #6: použij event.id zaručene – preskočili sme eventy bez ID v fetchNow
   const stakes100 = entries.map(([name,{odds,bm}]) => ({
     outcome: name, odds, bm,
     stake: Math.round((100/impl)/odds*100)/100,
@@ -586,39 +655,35 @@ function calcArb(event) {
 
   const sportKey = Object.keys(SPORT_EMOJI).find(k => (event._sport||'').includes(k)) || 'other';
   const commence = event.commence_time || null;
-  const timeStr = commence
+  const timeStr  = commence
     ? new Date(commence).toLocaleString('sk-SK',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
     : '';
 
-  const minOdds = Math.min(...stakes100.map(s=>s.odds));
-  const maxOdds = Math.max(...stakes100.map(s=>s.odds));
-  const oddsSpread = maxOdds / minOdds;
+  const oddsVals   = stakes100.map(s=>s.odds);
+  const oddsSpread = Math.max(...oddsVals) / Math.min(...oddsVals);
   let risk = 'low';
   if (profit_pct < 0.3 || oddsSpread > 4) risk = 'high';
   else if (profit_pct < 0.8 || oddsSpread > 2.5) risk = 'med';
 
   return {
     id: event.id,
-    sport: event._sport || '',
-    sportKey,
+    sport: event._sport || '', sportKey,
     emoji: SPORT_EMOJI[sportKey] || '🏆',
-    home: event.home_team || '',
-    away: event.away_team || '',
-    commence_time: commence,
-    time_str: timeStr,
-    profit_pct,
-    impl_pct: Math.round(impl*10000)/100,
-    stakes100,
-    risk,
+    home: event.home_team || '', away: event.away_team || '',
+    commence_time: commence, time_str: timeStr,
+    profit_pct, impl_pct: Math.round(impl*10000)/100,
+    stakes100, risk,
   };
 }
 
 // ═══════════════════════════════════════════════
-// HELPERS
+// COUNTDOWN – FIX #9: nezobrazuj pre príliš staré záznamy
 // ═══════════════════════════════════════════════
 function countdownStr(commence_time) {
   if (!commence_time) return '';
   const diff = new Date(commence_time).getTime() - Date.now();
+  // FIX #9: ak je viac ako 7 dní v minulosti, nezobrazuj
+  if (diff < -7*24*3600*1000) return '';
   if (diff < 0) return '⏱ Prebieha/Skončil';
   const h = Math.floor(diff/3600000);
   const m = Math.floor((diff%3600000)/60000);
@@ -641,56 +706,62 @@ function oddsChangeHtml(oppId, outcome, currentOdds) {
 // RENDER
 // ═══════════════════════════════════════════════
 function render() {
-  updateStats();
+  // FIX #8: načítaj raz a použi
+  const saved   = getSaved();
+  const betted  = getBetted();
+  updateStatsData(saved, betted);
   const el = document.getElementById('content');
   document.getElementById('filter-bar').style.display = activeTab==='new' ? '' : 'none';
-  if      (activeTab==='new')     renderNew(el);
-  else if (activeTab==='saved')   renderSaved(el);
-  else if (activeTab==='betted')  renderBetted(el);
+  if      (activeTab==='new')     renderNew(el, saved, betted);
+  else if (activeTab==='saved')   renderSaved(el, saved, betted);
+  else if (activeTab==='betted')  renderBetted(el, betted);
   else if (activeTab==='history') renderHistory(el);
-  updateGoal();
-  updateCountdowns();
+  updateGoalDisplay();
+}
+
+function updateStatsData(saved, betted) {
+  const src = opps.length ? opps : (LS.get('cached_opps')||[]);
+  document.getElementById('s-arb').textContent    = src.length || '–';
+  document.getElementById('s-saved').textContent  = saved.length;
+  document.getElementById('s-betted').textContent = betted.length;
+  document.getElementById('s-best').textContent   = src[0] ? `+${src[0].profit_pct.toFixed(2)}%` : '–';
+  document.getElementById('tb-new').textContent    = src.length;
+  document.getElementById('tb-saved').textContent  = saved.length;
+  document.getElementById('tb-betted').textContent = betted.length;
 }
 
 function updateStats() {
-  const src = opps.length ? opps : (LS.get('cached_opps')||[]);
-  document.getElementById('s-arb').textContent    = src.length || '–';
-  document.getElementById('s-saved').textContent  = getSaved().length;
-  document.getElementById('s-betted').textContent = getBetted().length;
-  document.getElementById('s-best').textContent   = src[0] ? `+${src[0].profit_pct.toFixed(2)}%` : '–';
-  document.getElementById('tb-new').textContent    = src.length;
-  document.getElementById('tb-saved').textContent  = getSaved().length;
-  document.getElementById('tb-betted').textContent = getBetted().length;
+  updateStatsData(getSaved(), getBetted());
 }
 
-function renderNew(el) {
+function renderNew(el, saved, betted) {
   const minP = parseFloat(document.getElementById('min-p').value)||0;
-  let src = opps.length ? opps : (LS.get('cached_opps')||[]);
+  // FIX #13: použi opps priamo, nekopíruj z LS ak opps existuje
+  const src = opps.length ? opps : (LS.get('cached_opps')||[]);
   let list = src.filter(o => {
+    if (!o || !o.sport) return false;
     if (sportFilter!=='all' && !o.sport.includes(sportFilter)) return false;
     return o.profit_pct >= minP;
   });
   list.sort((a,b) => b.profit_pct - a.profit_pct);
   if (!list.length) { el.innerHTML = emptyHtml('🔍','Žiadne arbitráže','Skús znížiť min. profit alebo stlač 🔄 Refresh'); return; }
-  const savedIds  = new Set(getSaved().map(x=>x.id));
-  const bettedIds = new Set(getBetted().map(x=>x.id));
+  const savedIds  = new Set(saved.map(x=>x.id));
+  const bettedIds = new Set(betted.map(x=>x.id));
   el.innerHTML = `<div class="cards">${list.map((o,i)=>cardHtml(o,i,{isSaved:savedIds.has(o.id),isBetted:bettedIds.has(o.id)})).join('')}</div>`;
 }
 
-function renderSaved(el) {
-  let list = getSaved();
-  if (!list.length) { el.innerHTML = emptyHtml('⭐','Žiadne uložené','Arbitráže sa ukladajú automaticky po každom refreshi'); return; }
-  list.sort((a,b) => b.profit_pct - a.profit_pct);
-  const bIds = new Set(getBetted().map(x=>x.id));
-  el.innerHTML = `<div class="sec-hdr"><span class="sec-title" style="color:var(--purple)">⭐ Uložené</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>
-  <div class="cards">${list.map((o,i)=>cardHtml(o,i,{isSaved:true,isBetted:bIds.has(o.id)})).join('')}</div>`;
+function renderSaved(el, saved, betted) {
+  if (!saved.length) { el.innerHTML = emptyHtml('⭐','Žiadne uložené','Arbitráže sa ukladajú automaticky po každom refreshi'); return; }
+  const sorted = saved.slice().sort((a,b) => b.profit_pct - a.profit_pct);
+  const bIds = new Set(betted.map(x=>x.id));
+  el.innerHTML = `<div class="sec-hdr"><span class="sec-title" style="color:var(--purple)">⭐ Uložené</span><span class="sec-count">${sorted.length}</span><div class="sec-line"></div></div>
+  <div class="cards">${sorted.map((o,i)=>cardHtml(o,i,{isSaved:true,isBetted:bIds.has(o.id)})).join('')}</div>`;
 }
 
-function renderBetted(el) {
-  const list = getBetted();
-  if (!list.length) { el.innerHTML = emptyHtml('✅','Žiadne aktívne stávky','Klepni ✅ Vsadil som na ľubovoľnej arbitráži'); return; }
-  el.innerHTML = `<div class="sec-hdr"><span class="sec-title" style="color:var(--amber)">✅ Aktívne Stávky</span><span class="sec-count">${list.length}</span><div class="sec-line"></div></div>
-  <div class="cards">${list.map((o,i)=>bettedCardHtml(o,i)).join('')}</div>`;
+function renderBetted(el, betted) {
+  if (!betted.length) { el.innerHTML = emptyHtml('✅','Žiadne aktívne stávky','Klepni ✅ Vsadil som na ľubovoľnej arbitráži'); return; }
+  el.innerHTML = `<div class="sec-hdr"><span class="sec-title" style="color:var(--amber)">✅ Aktívne Stávky</span><span class="sec-count">${betted.length}</span><div class="sec-line"></div></div>
+  <div class="cards">${betted.map((o,i)=>bettedCardHtml(o,i)).join('')}</div>`;
 }
 
 function renderHistory(el) {
@@ -720,49 +791,55 @@ function renderHistory(el) {
 }
 
 // ═══════════════════════════════════════════════
-// CARD HTML
+// CARD HTML – FIX #12: XSS escape
 // ═══════════════════════════════════════════════
 function cardHtml(o, i, {isSaved, isBetted}) {
-  // FIX #17: ochrana ak stakes100 chýba
   if (!o || !o.stakes100) return '';
-  const tier = o.profit_pct>=2?'hot':o.profit_pct>=0.8?'warm':o.profit_pct>=0.3?'cool':'low';
-  const isPast = o.commence_time && new Date(o.commence_time)<new Date();
-  const cd = countdownStr(o.commence_time);
+  const tier    = o.profit_pct>=2?'hot':o.profit_pct>=0.8?'warm':o.profit_pct>=0.3?'cool':'low';
+  const isPast  = o.commence_time && new Date(o.commence_time)<new Date();
+  const cd      = countdownStr(o.commence_time);
   const riskCls = {low:'risk-low',med:'risk-med',high:'risk-high'}[o.risk||'med'];
   const riskLbl = {low:'Nízke riziko',med:'Stredné',high:'Vysoké'}[o.risk||'med'];
-  const calcId = `c${i}_${(o.id||'').slice(0,5)}`;
-
+  const calcId  = `c${i}_${(o.id||'').slice(0,5)}`;
   const ret100  = (100/o.impl_pct*100).toFixed(2);
   const prof100 = (100*(o.profit_pct/100)).toFixed(2);
 
+  // FIX #12: XSS escape na všetkých user-dátach
+  const safeHome = esc(o.home), safeAway = esc(o.away);
+
   const stakeRows = o.stakes100.map(s => {
-    const chg = oddsChangeHtml(o.id, s.outcome, s.odds);
+    const chg      = oddsChangeHtml(o.id, s.outcome, s.odds);
+    const safeOut  = esc(s.outcome);
+    const safeId   = safeOut.replace(/\W/g,'_');
     return `<div class="stake-row">
-      <div class="s-outcome">${s.outcome}</div>
+      <div class="s-outcome">${safeOut}</div>
       <div>${bmLink(s.bm)}</div>
       <div class="s-odds">${s.odds.toFixed(2)} ${chg}</div>
-      <div class="s-amt" id="amt_${calcId}_${s.outcome.replace(/\W/g,'_')}">€${s.stake.toFixed(2)}</div>
+      <div class="s-amt" id="amt_${calcId}_${safeId}">€${s.stake.toFixed(2)}</div>
     </div>`;
   }).join('');
+
+  const safeId8 = esc(o.id||'').slice(0,8);
+  const oId = (o.id||'').replace(/['"<>]/g,'');
 
   let actions = '';
   if (!isBetted) {
     actions = (isSaved
-      ? `<button class="act-btn" onclick="unsaveOpp('${o.id}')">★ Uložené</button>`
-      : `<button class="act-btn save" onclick="saveOpp('${o.id}')">⭐ Uložiť</button>`)
-      + `<button class="act-btn bet" onclick="openBetModal('${o.id}')">✅ Vsadil som</button>`;
+      ? `<button class="act-btn" onclick="unsaveOpp('${oId}')">★ Uložené</button>`
+      : `<button class="act-btn save" onclick="saveOpp('${oId}')">⭐ Uložiť</button>`)
+      + `<button class="act-btn bet" onclick="openBetModal('${oId}')">✅ Vsadil som</button>`;
   } else {
     actions = `<span style="font-size:.72rem;color:var(--green)">✅ Stávka zaznamenaná</span>`;
   }
 
-  return `<div class="card ${tier}" style="animation-delay:${i*.025}s" id="card_${(o.id||'').slice(0,8)}">
+  return `<div class="card ${tier}" style="animation-delay:${i*.025}s" id="card_${safeId8}">
     <div class="card-head">
-      <div class="sport-ico">${o.emoji}</div>
+      <div class="sport-ico">${o.emoji||'🏆'}</div>
       <div class="ev-info">
-        <div class="ev-teams">${o.home} vs ${o.away}</div>
+        <div class="ev-teams">${safeHome} vs ${safeAway}</div>
         <div class="ev-meta">
-          ${o.time_str?`<span class="ev-time ${isPast?'past':''}">📅 ${o.time_str}</span>`:''}
-          ${cd?`<span class="ev-countdown" id="cd_${(o.id||'').slice(0,8)}">${cd}</span>`:''}
+          ${o.time_str?`<span class="ev-time ${isPast?'past':''}">📅 ${esc(o.time_str)}</span>`:''}
+          ${cd?`<span class="ev-countdown" id="cd_${safeId8}">${cd}</span>`:''}
         </div>
       </div>
       <div class="profit-col">
@@ -780,7 +857,7 @@ function cardHtml(o, i, {isSaved, isBetted}) {
     <div class="calc-bar">
       <span class="calc-lbl">Investícia €:</span>
       <input class="calc-inp" type="number" value="100" min="1"
-        oninput="recalc(this,'${calcId}',${JSON.stringify(o.stakes100)},${o.impl_pct},${o.profit_pct})">
+        oninput="recalc(this,'${calcId}',${JSON.stringify(o.stakes100)},${o.impl_pct})">
       <div class="calc-res" id="eur_${calcId}">≈ ${(100*fxRates.eur).toFixed(0)}€ / ${(100*fxRates.czk).toFixed(0)} CZK</div>
     </div>
     <div class="action-bar">${actions}</div>
@@ -792,13 +869,14 @@ function bettedCardHtml(o, i) {
   const isPast = o.commence_time && new Date(o.commence_time)<new Date();
   const cd = countdownStr(o.commence_time);
   const stakes = o.stakes100 || [];
+  const oId = (o.id||'').replace(/['"<>]/g,'');
   return `<div class="card" style="border-color:rgba(0,230,118,.4);animation-delay:${i*.025}s">
     <div class="card-head">
       <div class="sport-ico">${o.emoji||'🏆'}</div>
       <div class="ev-info">
-        <div class="ev-teams">${o.home} vs ${o.away}</div>
+        <div class="ev-teams">${esc(o.home)} vs ${esc(o.away)}</div>
         <div class="ev-meta">
-          ${o.time_str?`<span class="ev-time ${isPast?'past':''}">📅 ${o.time_str}</span>`:''}
+          ${o.time_str?`<span class="ev-time ${isPast?'past':''}">📅 ${esc(o.time_str)}</span>`:''}
           ${cd?`<span class="ev-countdown">${cd}</span>`:''}
         </div>
       </div>
@@ -807,35 +885,35 @@ function bettedCardHtml(o, i) {
     <div class="betted-info">
       <div class="bi-cell"><div class="bi-val" style="color:var(--blue)">€${o.bet_total||'–'}</div><div class="bi-lbl">Vsadené</div></div>
       <div class="bi-cell"><div class="bi-val" style="color:var(--green)">€${o.expected_return||'–'}</div><div class="bi-lbl">Očak. výnos</div></div>
-      <div class="bi-cell"><div class="bi-val" style="color:var(--green)">€${o.profit?o.profit.toFixed(2):'–'}</div><div class="bi-lbl">Profit</div></div>
+      <div class="bi-cell"><div class="bi-val" style="color:var(--green)">€${o.profit!=null?o.profit.toFixed(2):'–'}</div><div class="bi-lbl">Profit</div></div>
     </div>
     <div style="padding:.5rem .95rem;border-top:1px solid var(--border)">
       ${stakes.map(s=>`<div class="stake-row">
-        <div class="s-outcome">${s.outcome}</div>
+        <div class="s-outcome">${esc(s.outcome)}</div>
         <div>${bmLink(s.bm)}</div>
         <div class="s-odds">${s.odds.toFixed(2)}</div>
-        <div class="s-amt">€${s.my_stake||s.stake}</div>
+        <div class="s-amt">€${(s.my_stake||s.stake).toFixed(2)}</div>
       </div>`).join('')}
     </div>
     <div class="action-bar">
       <span style="font-size:.68rem;color:var(--muted)">Vsadené: ${new Date(o.bet_at||Date.now()).toLocaleString('sk-SK',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</span>
-      <button class="act-btn del" style="margin-left:auto" onclick="removeBet('${o.id}')">🗑</button>
+      <button class="act-btn del" style="margin-left:auto" onclick="removeBet('${oId}')">🗑</button>
     </div>
   </div>`;
 }
 
 function histCardHtml(h) {
   if (!h) return '';
-  const pColor = (h.profit||0)>=0?'var(--green)':'var(--red)';
-  const pSign  = (h.profit||0)>=0?'+':'';
-  const roi = h.bet_total?((h.profit||0)/h.bet_total*100).toFixed(1):'–';
+  const pColor  = (h.profit||0)>=0?'var(--green)':'var(--red)';
+  const pSign   = (h.profit||0)>=0?'+':'';
+  const roi     = h.bet_total?((h.profit||0)/h.bet_total*100).toFixed(1):'–';
   const dateStr = new Date(h.archived_at||h.bet_at||Date.now()).toLocaleDateString('sk-SK');
   return `<div class="hist-card">
     <div class="hist-head">
       <span style="font-size:1.1rem">${h.emoji||'🏆'}</span>
       <div style="flex:1;min-width:0">
-        <div class="hist-teams">${h.home} vs ${h.away}</div>
-        <div style="font-size:.65rem;color:var(--muted)">${h.time_str||''} · ${dateStr}</div>
+        <div class="hist-teams">${esc(h.home)} vs ${esc(h.away)}</div>
+        <div style="font-size:.65rem;color:var(--muted)">${esc(h.time_str||'')} · ${dateStr}</div>
       </div>
     </div>
     <div class="hist-row">
@@ -852,7 +930,7 @@ function emptyHtml(ico,ttl,sub) {
 }
 
 // ═══════════════════════════════════════════════
-// CHART – FIX #11: destroy aj keď canvas chýba
+// CHART – FIX #11
 // ═══════════════════════════════════════════════
 function renderChart(list) {
   if (chartInst) { try { chartInst.destroy(); } catch {} chartInst = null; }
@@ -862,7 +940,7 @@ function renderChart(list) {
   let cum = 0;
   const labels = sorted.map(h=>new Date(h.bet_at||h.archived_at||Date.now()).toLocaleDateString('sk-SK',{day:'2-digit',month:'2-digit'}));
   const data   = sorted.map(h=>{cum+=(h.profit||0);return Math.round(cum*100)/100;});
-  chartInst = new Chart(ctx, {
+  chartInst = new Chart(ctx,{
     type:'line',
     data:{labels,datasets:[{data,label:'Profit €',borderColor:'#00e676',backgroundColor:'rgba(0,230,118,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#00e676',fill:true,tension:.35}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
@@ -872,9 +950,9 @@ function renderChart(list) {
 }
 
 // ═══════════════════════════════════════════════
-// GOAL
+// GOAL – FIX #6: modal namiesto prompt()
 // ═══════════════════════════════════════════════
-function updateGoal() {
+function updateGoalDisplay() {
   const goal = parseFloat(LS.get('monthly_goal')) || 500;
   document.getElementById('goal-val').textContent = '€'+goal;
   const roi = calcROI(getHistory());
@@ -883,17 +961,24 @@ function updateGoal() {
   document.getElementById('goal-pct').textContent = pct.toFixed(0)+'%';
 }
 
-function editGoal() {
-  const cur = LS.get('monthly_goal') || 500;
-  const v = prompt('Mesačný cieľ (€):', cur);
-  if (v && !isNaN(v) && parseFloat(v)>0) { LS.set('monthly_goal', parseFloat(v)); updateGoal(); toast('✅ Cieľ uložený!'); }
+function openGoalModal() {
+  const cur = parseFloat(LS.get('monthly_goal')) || 500;
+  document.getElementById('goal-inp').value = cur;
+  document.getElementById('goal-modal').style.display='flex';
+  setTimeout(()=>document.getElementById('goal-inp').focus(),100);
+}
+function closeGoalModal() { document.getElementById('goal-modal').style.display='none'; }
+function saveGoal() {
+  const v = parseFloat(document.getElementById('goal-inp').value);
+  if (v > 0) { LS.set('monthly_goal', v); updateGoalDisplay(); toast('✅ Cieľ uložený!'); }
+  closeGoalModal();
 }
 
 // ═══════════════════════════════════════════════
-// RECALC – FIX #7: impl_pct je napr. 96.43 => ret = tot/0.9643 ✅
+// RECALC – FIX #10: odstránený nepoužívaný profit_pct param
 // ═══════════════════════════════════════════════
-function recalc(inp, cid, stakes, impl_pct, profit_pct) {
-  const tot = parseFloat(inp.value)||100;
+function recalc(inp, cid, stakes, impl_pct) {
+  const tot  = parseFloat(inp.value)||100;
   const ret  = tot / (impl_pct/100);
   const prof = ret - tot;
   const set  = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
@@ -902,8 +987,9 @@ function recalc(inp, cid, stakes, impl_pct, profit_pct) {
   set(`pr_${cid}`,  '€'+prof.toFixed(2));
   set(`eur_${cid}`, `≈ ${(tot*fxRates.eur).toFixed(0)}€ / ${(tot*fxRates.czk).toFixed(0)} CZK`);
   stakes.forEach(s => {
-    const st = Math.round((tot/(impl_pct/100))/s.odds*100)/100;
-    set(`amt_${cid}_${s.outcome.replace(/\W/g,'_')}`, '€'+st.toFixed(2));
+    const st   = Math.round((tot/(impl_pct/100))/s.odds*100)/100;
+    const sId  = esc(s.outcome).replace(/\W/g,'_');
+    set(`amt_${cid}_${sId}`, '€'+st.toFixed(2));
   });
 }
 
@@ -917,44 +1003,51 @@ function calcROI(list) {
 }
 
 // ═══════════════════════════════════════════════
-// SAVE / BET
+// SAVE / BET – FIX #19: pendingBetOpp sa vždy resetuje
 // ═══════════════════════════════════════════════
 function findOpp(id) {
-  const src = opps.length?opps:(LS.get('cached_opps')||[]);
+  const src = opps.length ? opps : (LS.get('cached_opps')||[]);
   return src.find(o=>o.id===id) || getSaved().find(o=>o.id===id) || getBetted().find(o=>o.id===id);
 }
 
 function saveOpp(id) {
-  const o=findOpp(id); if(!o) return;
-  const s=getSaved();
-  if(!s.find(x=>x.id===id)){s.push({...o,saved_at:new Date().toISOString()});saveSaved(s);}
-  toast('⭐ Uložené!'); render();
+  const o = findOpp(id); if(!o) return;
+  const s = getSaved();
+  if (!s.find(x=>x.id===id)) {
+    s.push({...o, saved_at:new Date().toISOString(), auto:false});
+    saveSaved(s);
+  }
+  toast('⭐ Uložené!'); invalidateCache(); render();
 }
 
-function unsaveOpp(id) { saveSaved(getSaved().filter(x=>x.id!==id)); toast('Odstránené'); render(); }
+function unsaveOpp(id) {
+  saveSaved(getSaved().filter(x=>x.id!==id));
+  toast('Odstránené'); invalidateCache(); render();
+}
 
 function openBetModal(id) {
-  const o=findOpp(id); if(!o) return;
-  pendingBetOpp=o;
-  document.getElementById('bet-modal-event').textContent=`${o.home} vs ${o.away} · ${o.time_str||''}`;
-  document.getElementById('bet-total-inp').value=100;
+  pendingBetOpp = null; // FIX #19: vždy resetuj najprv
+  const o = findOpp(id); if(!o) return;
+  pendingBetOpp = o;
+  document.getElementById('bet-modal-event').textContent = `${o.home} vs ${o.away} · ${o.time_str||''}`;
+  document.getElementById('bet-total-inp').value = 100;
   updateBetPreview(100);
   document.getElementById('bet-modal').style.display='flex';
 }
 
-// FIX #1+#3: updateBetPreview má správne uzatvorenie
 function updateBetPreview(tot) {
-  const o=pendingBetOpp;
-  if(!o || !o.stakes100) return;
-  const ret=tot/(o.impl_pct/100), profit=ret-tot;
-  const rows = o.stakes100.map(s=>{
-    const st=Math.round((tot/(o.impl_pct/100))/s.odds*100)/100;
+  const o = pendingBetOpp;
+  if (!o || !o.stakes100) return;
+  const ret    = tot/(o.impl_pct/100);
+  const profit = ret - tot;
+  const rows   = o.stakes100.map(s => {
+    const st = Math.round((tot/(o.impl_pct/100))/s.odds*100)/100;
     return `<div style="display:flex;justify-content:space-between;margin-bottom:.3rem;">
-      <span>${s.outcome} @ ${s.odds.toFixed(2)} <span style="color:var(--muted);font-size:.72rem">(${s.bm})</span></span>
+      <span>${esc(s.outcome)} @ ${s.odds.toFixed(2)} <span style="color:var(--muted);font-size:.72rem">(${esc(s.bm)})</span></span>
       <strong style="color:var(--green)">€${st.toFixed(2)}</strong>
     </div>`;
   }).join('');
-  document.getElementById('bet-stakes-preview').innerHTML=`
+  document.getElementById('bet-stakes-preview').innerHTML = `
     <div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:9px;padding:.75rem;font-size:.8rem;">
       ${rows}
       <div style="border-top:1px solid rgba(255,255,255,.08);margin-top:.5rem;padding-top:.5rem;display:flex;justify-content:space-between;">
@@ -965,29 +1058,43 @@ function updateBetPreview(tot) {
 }
 
 function confirmBet() {
-  const o=pendingBetOpp; if(!o) return;
-  const tot=parseFloat(document.getElementById('bet-total-inp').value)||100;
-  const ret=tot/(o.impl_pct/100), profit=ret-tot;
-  const myStakes=(o.stakes100||[]).map(s=>({...s,my_stake:Math.round((tot/(o.impl_pct/100))/s.odds*100)/100}));
-  const record={...o,stakes100:myStakes,bet_total:tot,expected_return:ret.toFixed(2),profit:parseFloat(profit.toFixed(2)),bet_at:new Date().toISOString()};
-  const b=getBetted();
-  if(!b.find(x=>x.id===o.id)){b.push(record);saveBetted(b);}
+  const o = pendingBetOpp; if(!o) return;
+  const tot    = parseFloat(document.getElementById('bet-total-inp').value)||100;
+  const ret    = tot/(o.impl_pct/100);
+  const profit = ret - tot;
+  const myStakes = (o.stakes100||[]).map(s=>({...s,my_stake:Math.round((tot/(o.impl_pct/100))/s.odds*100)/100}));
+  const record = {
+    ...o, stakes100:myStakes, bet_total:tot,
+    expected_return:ret.toFixed(2), profit:parseFloat(profit.toFixed(2)),
+    bet_at:new Date().toISOString()
+  };
+  const b = getBetted();
+  if (!b.find(x=>x.id===o.id)) { b.push(record); saveBetted(b); }
   saveSaved(getSaved().filter(x=>x.id!==o.id));
-  closeBetModal(); toast('✅ Stávka zaznamenaná!'); render();
+  closeBetModal();
+  toast('✅ Stávka zaznamenaná!');
+  invalidateCache();
+  render();
 }
 
-function closeBetModal(){document.getElementById('bet-modal').style.display='none';pendingBetOpp=null;}
-function removeBet(id){saveBetted(getBetted().filter(x=>x.id!==id));toast('Stávka odstránená');render();}
+function closeBetModal() {
+  document.getElementById('bet-modal').style.display='none';
+  pendingBetOpp = null; // FIX #19
+}
+function removeBet(id) {
+  saveBetted(getBetted().filter(x=>x.id!==id));
+  toast('Stávka odstránená'); invalidateCache(); render();
+}
 
 // ═══════════════════════════════════════════════
-// EXPORT CSV – FIX #9: použij data URI pre mobile
+// EXPORT CSV – FIX #9: data URI
 // ═══════════════════════════════════════════════
 function exportCSV() {
   const list = getHistory();
   if (!list.length) { toast('História je prázdna'); return; }
   const rows = [['Dátum','Zápas','Šport','Vsadené €','Výnos €','Profit €','ROI %','Kurzy']];
   list.forEach(h => {
-    const roi = h.bet_total?((h.profit||0)/h.bet_total*100).toFixed(1):'–';
+    const roi  = h.bet_total?((h.profit||0)/h.bet_total*100).toFixed(1):'–';
     const odds = (h.stakes100||[]).map(s=>`${s.outcome}@${s.odds}`).join(' | ');
     rows.push([
       new Date(h.bet_at||h.archived_at||Date.now()).toLocaleDateString('sk-SK'),
@@ -996,22 +1103,22 @@ function exportCSV() {
       (h.profit||0).toFixed(2), roi, odds,
     ]);
   });
-  const csv = '\uFEFF' + rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
-  // FIX #9: data URI funguje spoľahlivejšie na Android
+  const csv = '\uFEFF' + rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
   const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  const a = document.createElement('a');
+  const a   = document.createElement('a');
   a.href=uri; a.download=`arbhunter_${new Date().toISOString().slice(0,10)}.csv`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   toast('📥 CSV stiahnuté!');
 }
 
 // ═══════════════════════════════════════════════
-// COUNTDOWNS
+// COUNTDOWNS – FIX #15: len jedna sada intervalov
 // ═══════════════════════════════════════════════
 function updateCountdowns() {
-  const src = opps.length?opps:(LS.get('cached_opps')||[]);
+  const src = opps.length ? opps : (LS.get('cached_opps')||[]);
   src.forEach(o => {
-    const el = document.getElementById(`cd_${(o.id||'').slice(0,8)}`);
+    if (!o || !o.id) return;
+    const el = document.getElementById(`cd_${(o.id).slice(0,8)}`);
     if (el) el.textContent = countdownStr(o.commence_time);
   });
 }
@@ -1022,8 +1129,7 @@ function updateCountdowns() {
 function setTab(tab,btn){
   activeTab=tab;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  btn.classList.add('on');
-  render();
+  btn.classList.add('on'); render();
 }
 function setFilter(btn,f){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
@@ -1031,7 +1137,7 @@ function setFilter(btn,f){
 }
 
 // ═══════════════════════════════════════════════
-// TIMER – FIX #12: ochrana pred dvojitým refreshom
+// TIMER – FIX #12+#14+#15
 // ═══════════════════════════════════════════════
 const getLastFetch   = () => { const v=localStorage.getItem('last_fetch'); return v?new Date(v):null; };
 const setLastFetch   = () => localStorage.setItem('last_fetch',new Date().toISOString());
@@ -1039,47 +1145,57 @@ const hoursSinceLast = () => { const l=getLastFetch(); return l?(Date.now()-l.ge
 const nextRefreshTime= () => { const h=new Date().getHours(); for(const x of REFRESH_HOURS){if(x>h)return x;} return REFRESH_HOURS[0]+24; };
 
 function updateRefreshUI() {
-  const last=getLastFetch();
-  const nH=nextRefreshTime();
-  const lastStr=last?last.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}):'–';
-  const nLbl=nH>=24?`zajtra o ${String(REFRESH_HOURS[0]).padStart(2,'0')}:00`:`o ${String(nH).padStart(2,'0')}:00`;
-  document.getElementById('cd-lbl').textContent=`Posledný: ${lastStr} · Ďalší`;
-  document.getElementById('cd').textContent=nLbl;
+  const last   = getLastFetch();
+  const nH     = nextRefreshTime();
+  const lastStr = last?last.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}):'–';
+  const nLbl    = nH>=24?`zajtra o ${String(REFRESH_HOURS[0]).padStart(2,'0')}:00`:`o ${String(nH).padStart(2,'0')}:00`;
+  document.getElementById('cd-lbl').textContent = `Posledný: ${lastStr} · Ďalší`;
+  document.getElementById('cd').textContent     = nLbl;
+  // FIX #14: aktualizuj progress bar
+  const nextMs = nH<24 ? (nH*60 - (new Date().getHours()*60+new Date().getMinutes()))*60000 : 12*3600*1000;
+  const totalMs = 12*3600*1000;
+  const pct = Math.max(0, Math.min(100, nextMs/totalMs*100));
+  document.getElementById('prog').style.width = pct+'%';
 }
 
 function startTimer() {
-  clearInterval(timer);
-  timer=setInterval(()=>{
-    const n=new Date();
-    const nowMin = n.getHours()*60+n.getMinutes();
-    // FIX #12: použi lastAutoRefresh aby sme nezavolali 2x v rovnakú minútu
-    if(REFRESH_HOURS.includes(n.getHours()) && n.getMinutes()===0 && n.getSeconds()<5 && nowMin!==lastAutoRefresh) {
-      lastAutoRefresh = nowMin;
+  clearInterval(timerInterval);
+  // FIX #15: jeden interval, zvláda countdowns aj auto-refresh
+  timerInterval = setInterval(() => {
+    const n      = new Date();
+    const nowMin = n.getHours()*60 + n.getMinutes();
+    // FIX #12: auto-refresh len raz za minútu
+    if (REFRESH_HOURS.includes(n.getHours()) && n.getMinutes()===0 && n.getSeconds()<5 && nowMin!==lastAutoMin) {
+      lastAutoMin = nowMin;
       fetchNow();
     }
     updateRefreshUI();
     updateCountdowns();
-  },1000);
+  }, 1000);
 }
 
 // ═══════════════════════════════════════════════
-// BOOKMAKER LINKS
+// BOOKMAKER LINKS – FIX #16: rel="noopener noreferrer"
 // ═══════════════════════════════════════════════
-const BM_URLS={'Fortuna':'https://www.ifortuna.sk','Tipsport':'https://www.tipsport.sk','Niké':'https://www.nike.sk','Nike':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Doxxbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Tipsport CZ':'https://www.tipsport.cz','Fortuna CZ':'https://www.ifortuna.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz','Bet365':'https://www.bet365.com','bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','Winamax':'https://www.winamax.fr','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','Casumo':'https://www.casumo.com/sports','Matchbook':'https://www.matchbook.com','1xBet':'https://www.1xbet.com','SBObet':'https://www.sbobet.com'};
-const BM_SK_MAP={'Fortuna SK':'https://www.ifortuna.sk','Tipsport SK':'https://www.tipsport.sk','Niké':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Fortuna CZ':'https://www.ifortuna.cz','Tipsport CZ':'https://www.tipsport.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz'};
-const BM_EU_MAP={'Bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','1xBet':'https://www.1xbet.com','Matchbook':'https://www.matchbook.com'};
+const BM_URLS = {'Fortuna':'https://www.ifortuna.sk','Tipsport':'https://www.tipsport.sk','Niké':'https://www.nike.sk','Nike':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Doxxbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Tipsport CZ':'https://www.tipsport.cz','Fortuna CZ':'https://www.ifortuna.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz','Bet365':'https://www.bet365.com','bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','Winamax':'https://www.winamax.fr','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','Casumo':'https://www.casumo.com/sports','Matchbook':'https://www.matchbook.com','1xBet':'https://www.1xbet.com','SBObet':'https://www.sbobet.com'};
+const BM_SK_MAP = {'Fortuna SK':'https://www.ifortuna.sk','Tipsport SK':'https://www.tipsport.sk','Niké':'https://www.nike.sk','DOXXbet':'https://www.doxxbet.sk','Tipos':'https://www.tipos.sk','Synottip':'https://www.synottip.sk','Fortuna CZ':'https://www.ifortuna.cz','Tipsport CZ':'https://www.tipsport.cz','Chance':'https://www.chance.cz','Sazka':'https://www.sazka.cz'};
+const BM_EU_MAP = {'Bet365':'https://www.bet365.com','Bwin':'https://www.bwin.com','Unibet':'https://www.unibet.com','William Hill':'https://www.williamhill.com','Betfair':'https://www.betfair.com','Ladbrokes':'https://www.ladbrokes.com','Paddy Power':'https://www.paddypower.com','Betway':'https://www.betway.com','888sport':'https://www.888sport.com','Pinnacle':'https://www.pinnacle.com','Marathonbet':'https://www.marathonbet.com','Betsson':'https://www.betsson.com','Betclic':'https://www.betclic.com','NetBet':'https://www.netbet.com','Coolbet':'https://www.coolbet.com','LeoVegas':'https://www.leovegas.com/sports','1xBet':'https://www.1xbet.com','Matchbook':'https://www.matchbook.com'};
 
-function bmLink(name){
-  const url=BM_URLS[name]||BM_URLS[Object.keys(BM_URLS).find(k=>name&&name.toLowerCase().includes(k.toLowerCase()))];
-  return url?`<a href="${url}" target="_blank" class="bm-link">${name} 🔗</a>`:`<span class="s-bm">${name||'–'}</span>`;
+function bmLink(name) {
+  if (!name) return '<span class="s-bm">–</span>';
+  const safeName = esc(name);
+  const url = BM_URLS[name] || BM_URLS[Object.keys(BM_URLS).find(k=>name.toLowerCase().includes(k.toLowerCase()))];
+  return url
+    ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="bm-link">${safeName} 🔗</a>`
+    : `<span class="s-bm">${safeName}</span>`;
 }
 
-function toggleBmDir(){
-  const el=document.getElementById('bm-dir');
-  if(el.style.display==='none'||!el.style.display){
+function toggleBmDir() {
+  const el = document.getElementById('bm-dir');
+  if (el.style.display==='none'||!el.style.display) {
     el.style.display='block';
-    document.getElementById('bm-sk').innerHTML=Object.entries(BM_SK_MAP).map(([n,u])=>`<a href="${u}" target="_blank" style="background:rgba(255,171,0,.1);border:1px solid rgba(255,171,0,.25);color:var(--amber);padding:.25rem .65rem;border-radius:99px;text-decoration:none;font-size:.75rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${n} 🔗</a>`).join('');
-    document.getElementById('bm-eu').innerHTML=Object.entries(BM_EU_MAP).map(([n,u])=>`<a href="${u}" target="_blank" style="background:rgba(68,138,255,.1);border:1px solid rgba(68,138,255,.25);color:var(--blue);padding:.25rem .65rem;border-radius:99px;text-decoration:none;font-size:.75rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${n} 🔗</a>`).join('');
+    document.getElementById('bm-sk').innerHTML=Object.entries(BM_SK_MAP).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener noreferrer" style="background:rgba(255,171,0,.1);border:1px solid rgba(255,171,0,.25);color:var(--amber);padding:.25rem .65rem;border-radius:99px;text-decoration:none;font-size:.75rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${esc(n)} 🔗</a>`).join('');
+    document.getElementById('bm-eu').innerHTML=Object.entries(BM_EU_MAP).map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener noreferrer" style="background:rgba(68,138,255,.1);border:1px solid rgba(68,138,255,.25);color:var(--blue);padding:.25rem .65rem;border-radius:99px;text-decoration:none;font-size:.75rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;">${esc(n)} 🔗</a>`).join('');
   } else { el.style.display='none'; }
 }
 
@@ -1088,14 +1204,19 @@ function toggleBmDir(){
 // ═══════════════════════════════════════════════
 function setStatus(live,txt){document.getElementById('dot').className='dot'+(live?' on':'');document.getElementById('status-txt').textContent=txt;}
 function showSpin(v){document.getElementById('spin').style.display=v?'inline-block':'none';}
-function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2800);}
+function toast(msg){
+  // Odstráň existujúce toasty
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2800);
+}
 
 // ═══════════════════════════════════════════════
-// INIT
+// BOOT – FIX #1: oddelená funkcia pre spustenie po pridaní kľúča
 // ═══════════════════════════════════════════════
-function init() {
-  if (!getKeys().length) { openKeyModal(); setStatus(false,'Chýba API kľúč'); return; }
+function bootApp() {
   autoArchive();
+  invalidateCache();
   updateStats();
   updateKeyStatus();
   fetchFX();
@@ -1103,16 +1224,28 @@ function init() {
   if (hoursSinceLast() >= MIN_INTERVAL_H) {
     fetchNow();
   } else {
-    const cached=LS.get('cached_opps');
-    if(cached){ opps=cached; }
-    const last=getLastFetch();
-    setStatus(true,`Dáta z ${last?last.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}):'–'}`);
+    const cached = LS.get('cached_opps');
+    if (cached) { opps = cached; }
+    const last = getLastFetch();
+    setStatus(true, `Dáta z ${last?last.toLocaleTimeString('sk-SK',{hour:'2-digit',minute:'2-digit'}):'–'}`);
     render();
   }
   updateRefreshUI();
   startTimer();
-  setInterval(updateCountdowns, 60000);
+  // FIX #15: jeden interval pre FX, nie pre countdowns (tie sú v startTimer)
   setInterval(fetchFX, 3600000);
+}
+
+function init() {
+  // FIX #1: ak nie sú kľúče, zobraziť modal a nečakať
+  if (!getKeys().length) {
+    openKeyModal();
+    setStatus(false,'Chýba API kľúč');
+    updateRefreshUI();
+    startTimer(); // timer bežia aj bez kľúčov (UI aktualizácia)
+    return;
+  }
+  bootApp();
 }
 
 init();
